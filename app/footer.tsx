@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import Image from "next/image";
-
-export default function Page() {
-  return <main></main>;
+export default function Footer() {
+    return (
+        <div className="w-full h-24 border-t flex items-center justify-center text-sm text-gray-500">
+            <p>©2025 LunarcatOwO. Licensed Under GPL-3.0.</p>
+        </div>
+    )
 }
