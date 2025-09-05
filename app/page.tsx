@@ -17,5 +17,5 @@
 import Image from "next/image";
 
 export default function Page() {
-  return <main></main>;
+  return (<text>Oh. You found me... This is still WIP please visit https://old.lunarcatowo.space for now</text>)
 }
