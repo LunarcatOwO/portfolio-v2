@@ -10,6 +10,7 @@
     "license:check": "node scripts/add-license.js --check"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.10.0",
     "geist": "^1.4.2",
     "next": "15.5.2",
     "react": "19.1.0",

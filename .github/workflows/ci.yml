@@ -50,6 +50,7 @@ jobs:
               run: npm run build
               env:
                   NEXT_TELEMETRY_DISABLED: 1
+                  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
             - name: Create zip archive of build
               if: github.event_name != 'pull_request'
