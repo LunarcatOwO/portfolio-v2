@@ -1,0 +1,17 @@
+services:
+  web:
+    image: ghcr.io/lunarcatowo/portfolio-v2:latest
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
+      - "com.centurylabs.watchtower.scope=portfolio-v2"
+  watchtower:
+    image: containrrr/watchtower:latest
+    command: --interval 60 --cleanup --rolling-restart --scope portfolio-v2 --labels-enable
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=60
