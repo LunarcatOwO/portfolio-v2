@@ -15,7 +15,9 @@ concurrency:
 jobs:
     build:
         runs-on: ubuntu-latest
-
+        permissions:
+          contents: write
+          packages: write
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
@@ -34,30 +36,50 @@ jobs:
             - name: Restore Next.js cache
               uses: actions/cache@v4
               with:
-                  path: .next/cache
-                  # Include any lockfile present to scope caches per dependency graph
-                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json','**/pnpm-lock.yaml','**/yarn.lock') }}-${{ github.sha }}
+                  # See here for caching with `yarn`, `bun` or other package managers https://github.com/actions/cache/blob/main/examples.md or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+                  path: |
+                      ~/.npm
+                      ${{ github.workspace }}/.next/cache
+                  # Generate a new cache whenever packages or source files change.
+                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+                  # If source files changed but packages didn't, rebuild from a prior cache.
                   restore-keys: |
-                      ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json','**/pnpm-lock.yaml','**/yarn.lock') }}-
+                      ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
             - name: Build Next.js application
               run: npm run build
               env:
                   NEXT_TELEMETRY_DISABLED: 1
 
-            - name: Compute lowercase owner
-              id: repo
-              run: echo "owner_lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
-            
+            - name: Cache Docker layers
+              uses: actions/cache@v4
+              with:
+                  path: /tmp/.buildx-cache
+                  key: ${{ runner.os }}-buildx-${{ github.sha }}
+                  restore-keys: |
+                      ${{ runner.os }}-buildx-
+
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
             
             - name: Log in to GitHub Container Registry
+              if: github.event_name != 'pull_request'
               uses: docker/login-action@v3
               with:
                   registry: ghcr.io
-                  username: ${{ github.actor }}
+                  username: ${{ github.repository_owner }}
                   password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Extract metadata for Docker
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: ghcr.io/${{ github.repository_owner }}/portfolio-v2
+                  tags: |
+                      type=ref,event=branch
+                      type=sha,format=short
+                      type=raw,value=latest,enable={{is_default_branch}}
+                      type=raw,value=${{ github.ref_name }},enable=true
             
             - name: Build and push Docker image
               uses: docker/build-push-action@v5
@@ -65,9 +87,28 @@ jobs:
                   context: .
                   file: ./DockerFile
                   platforms: linux/amd64,linux/arm64
-                  push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-                  tags: |
-                      ghcr.io/${{ steps.repo.outputs.owner_lc }}/portfolio-v2:latest
-                      ghcr.io/${{ steps.repo.outputs.owner_lc }}/portfolio-v2:${{ github.sha }}
-                  cache-from: type=gha
-                  cache-to: type=gha,mode=max 
+                  push: ${{ github.event_name != 'pull_request' }}
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: |
+                      type=gha
+                      type=local,src=/tmp/.buildx-cache
+                  cache-to: |
+                      type=gha,mode=max
+                      type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+            - name: Move cache
+              run: |
+                  rm -rf /tmp/.buildx-cache
+                  mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+            - name: Create and push git tag with SHA
+              if: github.event_name != 'pull_request'
+              run: |
+                  TAG_NAME=sha-${GITHUB_SHA::7}
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+                  git config url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+                  git tag $TAG_NAME
+                  git push origin $TAG_NAME
+                  echo "Created and pushed tag: ${TAG_NAME}" 
