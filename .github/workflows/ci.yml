@@ -51,6 +51,22 @@ jobs:
               env:
                   NEXT_TELEMETRY_DISABLED: 1
 
+            - name: Create zip archive of build
+              if: github.event_name != 'pull_request'
+              run: |
+                  cd .next
+                  zip -r ../portfolio-build.zip .
+                  cd ..
+
+            - name: Create GitHub Release
+              if: github.event_name != 'pull_request'
+              uses: softprops/action-gh-release@v1
+              with:
+                  tag_name: release-${{ github.run_number }}
+                  name: Portfolio Build ${{ github.run_number }}
+                  files: portfolio-build.zip
+                  generate_release_notes: true
+
             - name: Cache Docker layers
               uses: actions/cache@v4
               with:
