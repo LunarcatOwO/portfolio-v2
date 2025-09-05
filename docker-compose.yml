@@ -5,14 +5,13 @@ services:
       NODE_ENV: production
     restart: unless-stopped
     labels:
-      - "com.centurylabs.watchtower.enable=true"
-      - "com.centurylabs.watchtower.scope=portfoliov2"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.scope=portfolio"
   watchtower:
     image: containrrr/watchtower
-    container_name: nyabot-watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 60 --cleanup --rolling-restart --scope portfoliov2 --label-enable
+    command: --interval 60 --cleanup --rolling-restart --scope portfolio --label-enable
     restart: always
     environment:
       - WATCHTOWER_POLL_INTERVAL=60
