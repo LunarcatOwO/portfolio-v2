@@ -13,9 +13,15 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-import Image from "next/image";
+import Footer from "./footer";
 
 export default function Page() {
-  return <text>Oh. You found me... This is still WIP please visit https://old.lunarcatowo.space for now</text>
+  return (
+    <div className="min-h-full flex flex-col">
+      <main className="flex-1 flex items-center justify-center">
+        Oh. You found me... This is still WIP please visit https://old.lunarcatowo.space for now
+      </main>
+      <Footer />
+    </div>
+  );
 }
