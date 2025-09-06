@@ -59,6 +59,7 @@ jobs:
               env:
                   NEXT_TELEMETRY_DISABLED: 1
                   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
             - name: Create zip archive of build
               if: github.event_name != 'pull_request'

@@ -1,4 +1,5 @@
 import {withSentryConfig} from "@sentry/nextjs";
+import { codecovNextJSWebpackPlugin } from "@codecov/nextjs-webpack-plugin";
 // Portfolio Of LunarcatOwO
 // Copyright (C) 2025  LunarcatOwO
 
@@ -18,7 +19,19 @@ import {withSentryConfig} from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'standalone'
+  output: 'standalone',
+  webpack: (config, options) => {
+    config.plugins.push(
+      codecovNextJSWebpackPlugin({
+        enableBundleAnalysis: true,
+        bundleName: "portfolio-v2-nextjs-bundle",
+        uploadToken: process.env.CODECOV_TOKEN,
+        webpack: options.webpack,
+      }),
+    );
+
+    return config;
+  },
 };
 
 export default withSentryConfig(nextConfig, {
