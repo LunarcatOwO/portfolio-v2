@@ -16,8 +16,8 @@
 
 export default function Footer() {
     return (
-        <div className="w-full h-24 border-t flex items-center justify-center text-sm text-gray-500">
-            <p>©2025 LunarcatOwO. Licensed Under GPL-3.0.</p>
+        <div className="w-full h-10 border-t flex items-center justify-center text-sm text-gray-500">
+            <p>This project is <a href="https://github.com/LunarcatOwO/portfolio-v2" className="text-blue-500 hover:underline">open source</a> ©2025 LunarcatOwO. Licensed Under GPL-3.0.</p>
         </div>
     )
 }

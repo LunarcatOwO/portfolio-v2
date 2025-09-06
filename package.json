@@ -6,8 +6,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "license:add": "node scripts/add-license.js",
-    "license:check": "node scripts/add-license.js --check"
+    "test": "vitest run --coverage"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.10.0",
@@ -19,13 +18,18 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
+    "jsdom": "^26.1.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   },
   "description": "Portfolio Of LunarcatOwO",
   "repository": {
