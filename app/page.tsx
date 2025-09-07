@@ -13,12 +13,14 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"use client";
 import Footer from "../components/Footer";
-import TechCard from "../components/TechCard";
+import TechCardSection from "../components/TechCard";
 import ProjectCard from "../components/ProjectCard";
 import ProfilePicture from "../components/ProfilePicture";
-import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit } from "simple-icons";
+import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript } from "simple-icons";
 import { Zap, Coffee } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Page() {
   // Helper function to render Simple Icons
@@ -28,11 +30,49 @@ export default function Page() {
     </svg>
   );
 
+  // Tech Cards Data
+  const techCards = [
+    { name: "Node.js", description: "Most my things are made with this", icon: <SimpleIcon icon={siNodedotjs} className="w-8 h-8 text-green-600" /> },
+    { name: "Next.js", description: "Frontend stuff", icon: <SimpleIcon icon={siNextdotjs} className="w-8 h-8 text-blue-600" /> },
+    { name: "Typescript", description: "Backend stuff (for this site only for now...)", icon: <SimpleIcon icon={siTypescript} className="w-8 h-8 text-blue-600" /> },
+    { name: "Docker", description: "Container stuff ig", icon: <SimpleIcon icon={siDocker} className="w-8 h-8 text-blue-500" /> },
+    { name: "Java", description: "I don't even know.", icon: <Coffee className="w-8 h-8 text-orange-600" /> },
+    { name: "Git", description: "Mostly Github ¯\\_(ツ)_/¯", icon: <SimpleIcon icon={siGit} className="w-8 h-8 text-red-500" /> },
+    { name: "Random APIs", description: "Just here for stuff I guess", icon: <Zap className="w-8 h-8 text-purple-500" /> },
+  ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6
+      }
+    }
+  };
+
   return (
     <div className="min-h-full flex flex-col bg-background text-foreground">
-      <main className="flex-1 max-w-4xl mx-auto px-6 py-16">
+      <motion.main 
+        className="flex-1 max-w-4xl mx-auto px-6 py-16"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Hero Section */}
-        <section className="mb-16">
+        <motion.section className="mb-16" variants={itemVariants}>
           <div className="flex items-start gap-4 sm:gap-6 mb-8">
             <ProfilePicture 
               username="LunarcatOwO" 
@@ -56,23 +96,15 @@ export default function Page() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        {/* Technologies */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold mb-8">Things I Use</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <TechCard name="Node.js" description="Most my things are made with this" icon={<SimpleIcon icon={siNodedotjs} className="w-8 h-8 text-green-600" />} />
-            <TechCard name="Next.js" description="Frontend stuff" icon={<SimpleIcon icon={siNextdotjs} className="w-8 h-8 text-blue-600" />} />
-            <TechCard name="Docker" description="Container stuff ig" icon={<SimpleIcon icon={siDocker} className="w-8 h-8 text-blue-500" />} />
-            <TechCard name="Java" description="I don't even know." icon={<Coffee className="w-8 h-8 text-orange-600" />} />
-            <TechCard name="Git" description="Mostly Github ¯\_(ツ)_/¯" icon={<SimpleIcon icon={siGit} className="w-8 h-8 text-red-500" />} />
-            <TechCard name="Random APIs" description="Just here for stuff I guess" icon={<Zap className="w-8 h-8 text-purple-500" />} />
-          </div>
-        </section>
+        {/* Tech Cards */}
+        <motion.div variants={itemVariants}>
+          <TechCardSection techCards={techCards} />
+        </motion.div>
 
         {/* Featured Work */}
-        <section className="mb-16">
+        <motion.section className="mb-16" variants={itemVariants}>
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold">Recent Things I&apos;ve Made</h2>
           </div>
@@ -86,18 +118,26 @@ export default function Page() {
               repoUrl="https://github.com/LunarcatOwO/portfolio-v2"
             />
           </div>
-        </section>
+        </motion.section>
 
         {/* Latest Posts */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold mb-8">Social Posts</h2>
+        <motion.section className="mb-16" variants={itemVariants}>
+          <h2 className="text-2xl font-bold mb-8">
+            Social Posts
+          </h2>
           <div className="text-center py-12 text-gray-500 dark:text-gray-400">
             <p>This is where social media posts should be...</p>
             <p className="text-sm mt-2">But for now, just pretend there&apos;s some sort of content.</p>
           </div>
-        </section>
-      </main>
-      <Footer />
+        </motion.section>
+      </motion.main>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+      >
+        <Footer />
+      </motion.div>
     </div>
   );
 }

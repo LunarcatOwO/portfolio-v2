@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+"use client";
 import ProjectIcon from './ProjectIcon';
+import { motion } from 'framer-motion';
 
 interface ProjectCardProps {
   name: string;
@@ -44,49 +46,116 @@ export default function ProjectCard({ name, description, status, technologies, l
   };
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 hover:shadow-md dark:hover:shadow-gray-900/20">
-      <div className="flex items-start gap-4 mb-4">
-        {icon ? (
-          <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-            {icon}
-          </div>
-        ) : (
-          <ProjectIcon 
-            repoUrl={repoUrl} 
-            projectName={name} 
-            className="w-12 h-12"
-          />
-        )}
-        <div className="flex-1">
-          <h3 className="text-xl font-semibold mb-2">{name}</h3>
-          <div className="flex items-center gap-2 mb-3">
+    <motion.div 
+      className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 transition-all duration-200"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      whileHover={{ 
+        scale: 1.02,
+        borderColor: "rgb(156 163 175)",
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+      }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <motion.div 
+        className="flex items-start gap-4 mb-4"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <motion.div
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          transition={{ duration: 0.2 }}
+        >
+          {icon ? (
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+              {icon}
+            </div>
+          ) : (
+            <ProjectIcon 
+              repoUrl={repoUrl} 
+              projectName={name} 
+              className="w-12 h-12"
+            />
+          )}
+        </motion.div>
+        <motion.div 
+          className="flex-1"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <motion.h3 
+            className="text-xl font-semibold mb-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            {name}
+          </motion.h3>
+          <motion.div 
+            className="flex items-center gap-2 mb-3"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 }}
+          >
             <span className={`px-2 py-1 text-xs rounded ${getStatusColor(status)}`}>
               {status}
             </span>
-          </div>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
+          </motion.div>
+          <motion.p 
+            className="text-gray-700 dark:text-gray-300 mb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
             {description}
-          </p>
-          <div className="flex flex-wrap gap-2 mb-4">
-            {technologies.map((tech) => (
-              <span 
+          </motion.p>
+          <motion.div 
+            className="flex flex-wrap gap-2 mb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+          >
+            {technologies.map((tech, index) => (
+              <motion.span 
                 key={tech} 
                 className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs rounded"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8 + index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
               >
                 {tech}
-              </span>
+              </motion.span>
             ))}
-          </div>
-          <a 
+          </motion.div>
+          <motion.a 
             href={link} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.9 }}
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)"
+            }}
+            whileTap={{ scale: 0.95 }}
           >
-            View Project →
-          </a>
-        </div>
-      </div>
-    </div>
+            View Project
+            <motion.span
+              initial={{ x: 0 }}
+              whileHover={{ x: 3 }}
+              transition={{ duration: 0.2 }}
+            >
+              →
+            </motion.span>
+          </motion.a>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }

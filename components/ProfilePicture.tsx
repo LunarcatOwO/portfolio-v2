@@ -18,6 +18,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 interface ProfilePictureProps {
   username: string;
@@ -61,27 +62,57 @@ export default function ProfilePicture({ username, className = "w-16 h-16", fall
   // If we have an avatar and it loaded successfully
   if (avatarUrl && !error) {
     return (
-      <div className={`${className} rounded-full overflow-hidden flex items-center justify-center bg-gray-100 dark:bg-gray-800 relative flex-shrink-0 aspect-square`}>
-        <Image 
-          src={avatarUrl} 
-          alt={`${username} profile picture`}
-          fill
-          className="object-cover"
-          onError={() => setError(true)}
-          unoptimized // For our API route
-        />
-      </div>
+      <motion.div 
+        className={`${className} rounded-full overflow-hidden flex items-center justify-center bg-gray-100 dark:bg-gray-800 relative flex-shrink-0 aspect-square`}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        whileHover={{ scale: 1.05 }}
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="w-full h-full"
+        >
+          <Image 
+            src={avatarUrl} 
+            alt={`${username} profile picture`}
+            fill
+            className="object-cover"
+            onError={() => setError(true)}
+            unoptimized // For our API route
+          />
+        </motion.div>
+      </motion.div>
     );
   }
 
   // Fallback to gradient with initials
   return (
-    <div className={`${className} bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0 aspect-square`}>
+    <motion.div 
+      className={`${className} bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0 aspect-square`}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      whileHover={{ scale: 1.05, rotate: 5 }}
+    >
       {loading ? (
-        <div className="aspect-square w-1/3 max-w-6 border-2 border-white border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
+        <motion.div 
+          className="aspect-square w-1/3 max-w-6 border-2 border-white border-t-transparent rounded-full flex-shrink-0"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        />
       ) : (
-        <span className="text-xl font-bold leading-none">{fallbackText}</span>
+        <motion.span 
+          className="text-xl font-bold leading-none"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
+          {fallbackText}
+        </motion.span>
       )}
-    </div>
+    </motion.div>
   );
 }
