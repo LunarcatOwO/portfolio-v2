@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
@@ -23,8 +23,15 @@ import "./globals.css";
 // `--font-geist-sans` and `--font-geist-mono`
 
 export const metadata: Metadata = {
-  title: "lunarcatowo.space",
-  description: "Just a doing things.",
+  title: "LunarcatOwO.space",
+  description: "Just doing things.",
+  keywords: ["developer", "programming", "dev"],
+  authors: [{ name: "LunarcatOwO" }],
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

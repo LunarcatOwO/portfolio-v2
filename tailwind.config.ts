@@ -14,10 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-export default function Footer() {
-    return (
-        <div className="w-full h-10 border-t flex items-center justify-center text-sm text-gray-500">
-            <p>This project is <a href="https://github.com/LunarcatOwO/portfolio-v2" className="text-blue-500 hover:underline">open source</a> ©2025 LunarcatOwO. Licensed Under GPL-3.0.</p>
-        </div>
-    )
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  darkMode: 'media',
+  theme: {
+    extend: {
+      colors: {
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+      },
+      fontFamily: {
+        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-geist-mono)', 'monospace'],
+      },
+    },
+  },
+  plugins: [],
 }
+
+export default config
