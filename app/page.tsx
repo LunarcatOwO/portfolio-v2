@@ -20,7 +20,7 @@ import ProjectCard from "../components/ProjectCard";
 import ProfilePicture from "../components/ProfilePicture";
 import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript } from "simple-icons";
 import { Zap, Coffee } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function Page() {
   // Helper function to render Simple Icons
@@ -46,7 +46,9 @@ export default function Page() {
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.6,
+        type: "spring" as const,
+        stiffness: 100,
+        damping: 15,
         staggerChildren: 0.1
       }
     }
@@ -58,7 +60,9 @@ export default function Page() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6
+        type: "spring" as const,
+        stiffness: 200,
+        damping: 20
       }
     }
   };
@@ -134,7 +138,12 @@ export default function Page() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
+        transition={{ 
+          type: "spring" as const,
+          stiffness: 150,
+          damping: 25,
+          delay: 0.8 
+        }}
       >
         <Footer />
       </motion.div>

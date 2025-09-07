@@ -16,7 +16,7 @@
 
 "use client";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function Footer() {
     return (
@@ -24,27 +24,47 @@ export default function Footer() {
             className="w-full py-8 border-t border-gray-200 dark:border-gray-800"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ 
+                type: "spring" as const,
+                stiffness: 150,
+                damping: 25
+            }}
         >
             <div className="flex flex-col items-center justify-center text-sm text-gray-600 dark:text-gray-400 space-y-4">
                 <motion.div 
                     className="flex items-center gap-2"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    transition={{ 
+                        type: "spring" as const,
+                        stiffness: 200,
+                        damping: 20,
+                        delay: 0.2 
+                    }}
                 >
                     <span>Made with</span>
                     <motion.span 
                         className="text-red-500"
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        animate={{ scale: 1.2 }}
+                        transition={{ 
+                            duration: 1,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            ease: "easeInOut"
+                        }}
                     >
                         ♥
                     </motion.span>
                     <span>by LunarcatOwO using</span>
                     <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.2 }}
+                        whileHover={{ 
+                            scale: 1.1,
+                            transition: {
+                                type: "spring" as const,
+                                stiffness: 400,
+                                damping: 15
+                            }
+                        }}
                     >
                         <Image 
                             src="/next.svg" 
@@ -59,13 +79,25 @@ export default function Footer() {
                     className="text-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
+                    transition={{ 
+                        type: "spring" as const,
+                        stiffness: 150,
+                        damping: 25,
+                        delay: 0.4 
+                    }}
                 >
                     This project is{" "}
                     <motion.a 
                         href="https://github.com/LunarcatOwO/portfolio-v2" 
                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors underline"
-                        whileHover={{ scale: 1.05 }}
+                        whileHover={{ 
+                            scale: 1.05,
+                            transition: {
+                                type: "spring" as const,
+                                stiffness: 400,
+                                damping: 15
+                            }
+                        }}
                     >
                         open source
                     </motion.a>

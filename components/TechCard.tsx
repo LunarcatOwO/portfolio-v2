@@ -17,7 +17,7 @@
 "use client";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface TechCardProps {
   name: string;
@@ -45,9 +45,21 @@ export function TechCard({ name, description, icon }: TechCardProps) {
       whileHover={{ 
         scale: 1.02,
         borderColor: "rgb(156 163 175)",
-        boxShadow: "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+        boxShadow: "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+        transition: {
+          type: "spring" as const,
+          stiffness: 400,
+          damping: 15
+        }
       }}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ 
+        scale: 0.98,
+        transition: {
+          type: "spring" as const,
+          stiffness: 600,
+          damping: 30
+        }
+      }}
     >
       <div className="mb-3">
         {icon ? icon : (
@@ -86,7 +98,9 @@ export default function TechCardSection({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5
+        type: "spring" as const,
+        stiffness: 300,
+        damping: 25
       }
     }
   };
@@ -97,7 +111,11 @@ export default function TechCardSection({
         className="text-2xl font-bold mb-8"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ 
+          type: "spring" as const,
+          stiffness: 200,
+          damping: 20
+        }}
       >
         {title}
       </motion.h2>
@@ -129,18 +147,41 @@ export default function TechCardSection({
           className="flex justify-center mt-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ 
+            type: "spring" as const,
+            stiffness: 100,
+            damping: 20,
+            delay: 0.5 
+          }}
         >
           <motion.button
             onClick={() => setIsExpanded(!isExpanded)}
             className="p-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
             aria-label={isExpanded ? "Show less technologies" : "Show more technologies"}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ 
+              scale: 1.1,
+              transition: {
+                type: "spring" as const,
+                stiffness: 400,
+                damping: 15
+              }
+            }}
+            whileTap={{ 
+              scale: 0.95,
+              transition: {
+                type: "spring" as const,
+                stiffness: 600,
+                damping: 30
+              }
+            }}
           >
             <motion.div
               animate={{ rotate: isExpanded ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ 
+                type: "spring" as const,
+                stiffness: 200,
+                damping: 25
+              }}
             >
               {isExpanded ? (
                 <ChevronUp className="w-5 h-5" />

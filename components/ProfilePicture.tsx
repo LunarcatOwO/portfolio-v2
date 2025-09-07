@@ -18,7 +18,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 interface ProfilePictureProps {
   username: string;
@@ -66,8 +66,19 @@ export default function ProfilePicture({ username, className = "w-16 h-16", fall
         className={`${className} rounded-full overflow-hidden flex items-center justify-center bg-gray-100 dark:bg-gray-800 relative flex-shrink-0 aspect-square`}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        whileHover={{ scale: 1.05 }}
+        transition={{ 
+          type: "spring" as const,
+          stiffness: 200,
+          damping: 20
+        }}
+        whileHover={{ 
+          scale: 1.05,
+          transition: {
+            type: "spring" as const,
+            stiffness: 400,
+            damping: 15
+          }
+        }}
       >
         <motion.div
           initial={{ opacity: 0 }}
@@ -94,8 +105,20 @@ export default function ProfilePicture({ username, className = "w-16 h-16", fall
       className={`${className} bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0 aspect-square`}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      whileHover={{ scale: 1.05, rotate: 5 }}
+      transition={{ 
+        type: "spring" as const,
+        stiffness: 200,
+        damping: 20
+      }}
+      whileHover={{ 
+        scale: 1.05, 
+        rotate: 5,
+        transition: {
+          type: "spring" as const,
+          stiffness: 400,
+          damping: 15
+        }
+      }}
     >
       {loading ? (
         <motion.div 

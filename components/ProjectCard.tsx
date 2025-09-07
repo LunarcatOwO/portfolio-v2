@@ -16,7 +16,7 @@
 
 "use client";
 import ProjectIcon from './ProjectIcon';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 interface ProjectCardProps {
   name: string;
@@ -50,13 +50,29 @@ export default function ProjectCard({ name, description, status, technologies, l
       className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 transition-all duration-200"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ 
+        type: "spring" as const,
+        stiffness: 200,
+        damping: 25
+      }}
       whileHover={{ 
         scale: 1.02,
         borderColor: "rgb(156 163 175)",
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        transition: {
+          type: "spring" as const,
+          stiffness: 300,
+          damping: 20
+        }
       }}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ 
+        scale: 0.98,
+        transition: {
+          type: "spring" as const,
+          stiffness: 400,
+          damping: 30
+        }
+      }}
     >
       <motion.div 
         className="flex items-start gap-4 mb-4"
@@ -65,8 +81,15 @@ export default function ProjectCard({ name, description, status, technologies, l
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <motion.div
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          transition={{ duration: 0.2 }}
+          whileHover={{ 
+            scale: 1.1, 
+            rotate: 5,
+            transition: {
+              type: "spring" as const,
+              stiffness: 400,
+              damping: 15
+            }
+          }}
         >
           {icon ? (
             <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
