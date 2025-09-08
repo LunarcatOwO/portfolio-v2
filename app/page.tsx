@@ -92,7 +92,7 @@ export default function Page() {
                 Just a random student developer who also happens to be techincally a full stack developer lol.
               </p>
               <div className="flex gap-4 mt-6">
-                <a href="https://github.com/LunarcatOwO" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors" aria-label="GitHub Profile">
+                <a href="https://github.com/LunarcatOwO" className="text-dark-gray-600 hover:text-dark-gray-800 dark:text-gray-400 dark:hover:text-gray-300 transition-colors" aria-label="GitHub Profile">
                   <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
                     <path d={siGithub.path} />
                   </svg>
