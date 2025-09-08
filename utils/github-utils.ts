@@ -48,7 +48,7 @@ export async function getProjectIcon(repoUrl: string): Promise<string | null> {
   const { owner, repo } = parsed;
   
   // Common icon extensions to check
-  const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'gif'];
+  const extensions = ['png', 'jpg', 'jpeg', 'svg', 'ico', 'webp', 'avif'];
   
   for (const ext of extensions) {
     try {
