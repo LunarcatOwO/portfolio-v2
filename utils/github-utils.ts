@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/**
+/**`
  * Extracts owner and repository name from a GitHub URL
  */
 export function parseGitHubUrl(url: string): { owner: string; repo: string } | null {
@@ -33,52 +33,4 @@ export function parseGitHubUrl(url: string): { owner: string; repo: string } | n
   } catch {
     return null;
   }
-}
-
-/**
- * Checks if a project-icon file exists in the repository
- * Returns the URL to the icon if found, null otherwise
- */
-export async function getProjectIcon(repoUrl: string): Promise<string | null> {
-  const parsed = parseGitHubUrl(repoUrl);
-  if (!parsed) {
-    return null;
-  }
-
-  const { owner, repo } = parsed;
-  
-  // Common icon extensions to check
-  const extensions = ['png', 'jpg', 'jpeg', 'svg', 'ico', 'webp', 'avif'];
-  
-  for (const ext of extensions) {
-    try {
-      const iconUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/project-icon.${ext}`;
-      
-      // Check if the file exists by making a HEAD request
-      const response = await fetch(iconUrl, { method: 'HEAD' });
-      
-      if (response.ok) {
-        return iconUrl;
-      }
-    } catch {
-      // Continue to next extension
-    }
-  }
-
-  // Also check master branch (some repos use master instead of main)
-  for (const ext of extensions) {
-    try {
-      const iconUrl = `https://raw.githubusercontent.com/${owner}/${repo}/master/project-icon.${ext}`;
-      
-      const response = await fetch(iconUrl, { method: 'HEAD' });
-      
-      if (response.ok) {
-        return iconUrl;
-      }
-    } catch {
-      // Continue to next extension
-    }
-  }
-
-  return null;
 }

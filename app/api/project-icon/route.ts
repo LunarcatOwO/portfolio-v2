@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
   const { owner, repo } = parsed;
   
   // Common icon extensions to check
-  const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'gif'];
+  const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
   const branches = ['main', 'master'];
   
   try {
