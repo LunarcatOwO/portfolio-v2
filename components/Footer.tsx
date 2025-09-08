@@ -56,16 +56,7 @@ export default function Footer() {
                         ♥
                     </motion.span>
                     <span>by LunarcatOwO using</span>
-                    <motion.div
-                        whileHover={{ 
-                            scale: 1.1,
-                            transition: {
-                                type: "spring" as const,
-                                stiffness: 400,
-                                damping: 15
-                            }
-                        }}
-                    >
+                    <div>
                         <Image 
                             src="/next.svg" 
                             alt="Next.js" 
@@ -73,7 +64,7 @@ export default function Footer() {
                             height={50}
                             className="dark:invert"
                         />
-                    </motion.div>
+                    </div>
                 </motion.div>
                 <motion.p 
                     className="text-center"
@@ -87,20 +78,12 @@ export default function Footer() {
                     }}
                 >
                     This project is{" "}
-                    <motion.a 
+                    <a 
                         href="https://github.com/LunarcatOwO/portfolio-v2" 
                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors underline"
-                        whileHover={{ 
-                            scale: 1.05,
-                            transition: {
-                                type: "spring" as const,
-                                stiffness: 400,
-                                damping: 15
-                            }
-                        }}
                     >
                         open source
-                    </motion.a>
+                    </a>
                     {" "}©2025 LunarcatOwO. Licensed Under GPL-3.0.
                 </motion.p>
             </div>

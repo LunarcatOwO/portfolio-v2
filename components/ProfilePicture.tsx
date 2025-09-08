@@ -71,14 +71,6 @@ export default function ProfilePicture({ username, className = "w-16 h-16", fall
           stiffness: 200,
           damping: 20
         }}
-        whileHover={{ 
-          scale: 1.05,
-          transition: {
-            type: "spring" as const,
-            stiffness: 400,
-            damping: 15
-          }
-        }}
       >
         <motion.div
           initial={{ opacity: 0 }}
@@ -109,15 +101,6 @@ export default function ProfilePicture({ username, className = "w-16 h-16", fall
         type: "spring" as const,
         stiffness: 200,
         damping: 20
-      }}
-      whileHover={{ 
-        scale: 1.05, 
-        rotate: 5,
-        transition: {
-          type: "spring" as const,
-          stiffness: 400,
-          damping: 15
-        }
       }}
     >
       {loading ? (

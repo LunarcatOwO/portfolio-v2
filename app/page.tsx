@@ -33,7 +33,7 @@ export default function Page() {
   // Tech Cards Data
   const techCards = [
     { name: "Node.js", description: "Most my things are made with this", icon: <SimpleIcon icon={siNodedotjs} className="w-8 h-8 text-green-600" /> },
-    { name: "Next.js", description: "Frontend stuff", icon: <SimpleIcon icon={siNextdotjs} className="w-8 h-8 text-blue-600" /> },
+    { name: "Next.js", description: "Frontend stuff (Don't have much experience yet)", icon: <SimpleIcon icon={siNextdotjs} className="w-8 h-8 text-blue-600" /> },
     { name: "Typescript", description: "Backend stuff (for this site only for now...)", icon: <SimpleIcon icon={siTypescript} className="w-8 h-8 text-blue-600" /> },
     { name: "Docker", description: "Container stuff ig", icon: <SimpleIcon icon={siDocker} className="w-8 h-8 text-blue-500" /> },
     { name: "Java", description: "I don't even know.", icon: <Coffee className="w-8 h-8 text-orange-600" /> },

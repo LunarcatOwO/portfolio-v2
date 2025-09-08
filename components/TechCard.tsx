@@ -16,7 +16,7 @@
 
 "use client";
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface TechCardProps {
@@ -183,11 +183,7 @@ export default function TechCardSection({
                 damping: 25
               }}
             >
-              {isExpanded ? (
-                <ChevronUp className="w-5 h-5" />
-              ) : (
-                <ChevronDown className="w-5 h-5" />
-              )}
+              <ChevronDown className="w-5 h-5" />
             </motion.div>
           </motion.button>
         </motion.div>

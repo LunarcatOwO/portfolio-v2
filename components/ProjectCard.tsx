@@ -45,16 +45,42 @@ export default function ProjectCard({ name, description, status, technologies, l
     }
   };
 
-  return (
-    <motion.div 
-      className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 transition-all duration-200"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
+  // Animation variants for orchestrated stagger timing
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
         type: "spring" as const,
         stiffness: 200,
+        damping: 25,
+        when: "beforeChildren" as const,
+        delayChildren: 0.3,
+        staggerChildren: 0.08
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring" as const,
+        stiffness: 300,
         damping: 25
-      }}
+      }
+    }
+  };
+
+  return (
+    <motion.div 
+      className="border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
       whileHover={{ 
         scale: 1.02,
         borderColor: "rgb(156 163 175)",
@@ -74,12 +100,7 @@ export default function ProjectCard({ name, description, status, technologies, l
         }
       }}
     >
-      <motion.div 
-        className="flex items-start gap-4 mb-4"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
+      <motion.div className="flex items-start gap-4" variants={itemVariants}>
         <motion.div
           whileHover={{ 
             scale: 1.1, 
@@ -103,80 +124,41 @@ export default function ProjectCard({ name, description, status, technologies, l
             />
           )}
         </motion.div>
-        <motion.div 
-          className="flex-1"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <motion.h3 
-            className="text-xl font-semibold mb-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
+        <div className="flex-1">
+          <h3 className="text-xl font-semibold mb-2">
             {name}
-          </motion.h3>
-          <motion.div 
-            className="flex items-center gap-2 mb-3"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 }}
-          >
+          </h3>
+          <div className="flex items-center gap-2 mb-3">
             <span className={`px-2 py-1 text-xs rounded ${getStatusColor(status)}`}>
               {status}
             </span>
-          </motion.div>
-          <motion.p 
-            className="text-gray-700 dark:text-gray-300 mb-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
+          </div>
+          <p className="text-gray-700 dark:text-gray-300 mb-4">
             {description}
-          </motion.p>
-          <motion.div 
-            className="flex flex-wrap gap-2 mb-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
-            {technologies.map((tech, index) => (
-              <motion.span 
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {technologies.map((tech) => (
+              <span 
                 key={tech} 
-                className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs rounded"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8 + index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
+                className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs rounded hover:scale-105 transition-transform duration-200"
               >
                 {tech}
-              </motion.span>
+              </span>
             ))}
-          </motion.div>
-          <motion.a 
+          </div>
+        </div>
+        <motion.div variants={itemVariants} className="flex-shrink-0">
+          <a 
             href={link} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.9 }}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)"
-            }}
-            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 group"
           >
             View Project
-            <motion.span
-              initial={{ x: 0 }}
-              whileHover={{ x: 3 }}
-              transition={{ duration: 0.2 }}
-            >
+            <span className="group-hover:translate-x-1 transition-transform duration-200">
               →
-            </motion.span>
-          </motion.a>
+            </span>
+          </a>
         </motion.div>
       </motion.div>
     </motion.div>
