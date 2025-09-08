@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 "use client";
-import TechCardSection from "../components/TechCard";
-import ProjectCard from "../components/ProjectCard";
+import TechCardSection from "../components/home/TechCard";
+import ProjectCard from "../components/home/ProjectCard";
 import ProfilePicture from "../components/ProfilePicture";
 import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript } from "simple-icons";
 import { Zap, Coffee } from "lucide-react";
