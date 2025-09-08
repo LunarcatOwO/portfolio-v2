@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "build:webpack": "next build",
     "start": "next start",
     "lint": "eslint",
     "license:add": "node scripts/add-license.js",
