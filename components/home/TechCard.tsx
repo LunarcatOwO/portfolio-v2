@@ -152,13 +152,15 @@ export default function TechCardSection({
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: false, amount: 0.2 }}
       >
         <AnimatePresence mode="popLayout">
           {displayedTechCards.map((tech, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
+              initial="hidden"
+              animate="visible"
               layout
               exit={{ opacity: 0, scale: 0.8 }}
             >
