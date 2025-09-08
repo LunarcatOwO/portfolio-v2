@@ -80,7 +80,8 @@ export default function ProjectCard({ name, description, status, technologies, l
       className="border border-gray-200 dark:border-gray-700 rounded-lg p-6"
       variants={cardVariants}
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
       whileHover={{ 
         scale: 1.02,
         borderColor: "rgb(156 163 175)",

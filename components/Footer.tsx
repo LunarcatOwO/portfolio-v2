@@ -21,9 +21,10 @@ import { motion } from "motion/react";
 export default function Footer() {
     return (
         <motion.div 
-            className="w-full py-8 border-t border-gray-200 dark:border-gray-800"
+            className="w-full py-6 sm:py-8 border-t border-gray-200 dark:border-gray-800"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ 
                 type: "spring" as const,
                 stiffness: 150,
@@ -34,12 +35,13 @@ export default function Footer() {
                 <motion.div 
                     className="flex items-center gap-2"
                     initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, amount: 0.3 }}
                     transition={{ 
                         type: "spring" as const,
                         stiffness: 200,
                         damping: 20,
-                        delay: 0.2 
+                        delay: 0.1 
                     }}
                 >
                     <span>Made with</span>
@@ -58,12 +60,12 @@ export default function Footer() {
                 <motion.p 
                     className="text-center"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true, amount: 0.2 }}
                     transition={{ 
                         type: "spring" as const,
                         stiffness: 150,
-                        damping: 25,
-                        delay: 0.4 
+                        damping: 25
                     }}
                 >
                     This project is{" "}

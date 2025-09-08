@@ -72,7 +72,8 @@ export default function Page() {
         className="flex-1 max-w-6xl mx-auto px-6 py-16"
         variants={containerVariants}
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
         layout
       >
         {/* Responsive two-column layout that animates between breakpoints */}
@@ -80,6 +81,9 @@ export default function Page() {
           className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12"
           layout
           transition={{ type: "spring", stiffness: 120, damping: 18 }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
         >
           {/* LEFT COLUMN: Hero + Tech (on desktop) */}
           <motion.section

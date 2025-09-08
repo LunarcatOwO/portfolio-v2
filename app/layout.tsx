@@ -19,6 +19,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Footer from "../components/Footer";
+import Script from "next/script";
 
 // Fonts are preconfigured with CSS variables:
 // `--font-geist-sans` and `--font-geist-mono`
@@ -46,11 +47,19 @@ export default function RootLayout({
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased font-sans h-full`}
       >
         <div className="min-h-full flex flex-col bg-background text-foreground">
-          <main className="flex-1">
+          <main className="flex-1 min-h-screen">
             {children}
           </main>
           <Footer />
         </div>
+        {/* Ensure on first load we are scrolled to the very top so the footer starts out of view */}
+        <Script id="scroll-top-on-load" strategy="afterInteractive">
+          {`
+            if (typeof window !== 'undefined' && 'scrollTo' in window) {
+              window.scrollTo(0, 0);
+            }
+          `}
+        </Script>
       </body>
     </html>
   );

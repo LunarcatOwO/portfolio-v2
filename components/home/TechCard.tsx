@@ -34,7 +34,6 @@ interface TechCardData {
 interface TechCardSectionProps {
   techCards: TechCardData[];
   title?: string;
-  initialDisplayCount?: number;
 }
 
 // Individual TechCard component
@@ -76,7 +75,6 @@ export function TechCard({ name, description, icon }: TechCardProps) {
 export default function TechCardSection({ 
   techCards, 
   title = "Things I Use", 
-  initialDisplayCount = 9 
 }: TechCardSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [columns, setColumns] = useState<1 | 2 | 3>(3);
@@ -107,7 +105,8 @@ export default function TechCardSection({
     };
   }, []);
 
-  const responsiveDisplayCount = columns === 1 ? 3 : columns === 2 ? 4 : initialDisplayCount;
+  // 2 rows visible at each breakpoint: 3 on 1-col, 4 on 2-col, 6 on 3-col
+  const responsiveDisplayCount = columns === 1 ? 3 : columns === 2 ? 4 : 6;
   const displayedTechCards = isExpanded ? techCards : techCards.slice(0, responsiveDisplayCount);
 
   const containerVariants = {
@@ -138,7 +137,8 @@ export default function TechCardSection({
       <motion.h2 
         className="text-2xl font-bold mb-8"
         initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ 
           type: "spring" as const,
           stiffness: 200,
@@ -151,7 +151,8 @@ export default function TechCardSection({
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
         variants={containerVariants}
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
       >
         <AnimatePresence mode="popLayout">
           {displayedTechCards.map((tech, index) => (
@@ -184,7 +185,7 @@ export default function TechCardSection({
         >
           <motion.button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="p-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="p-2 sm:p-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
             aria-label={isExpanded ? "Show less technologies" : "Show more technologies"}
             whileHover={{ 
               scale: 1.1,
@@ -211,7 +212,7 @@ export default function TechCardSection({
                 damping: 25
               }}
             >
-              <ChevronDown className="w-5 h-5" />
+              <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.div>
           </motion.button>
         </motion.div>
