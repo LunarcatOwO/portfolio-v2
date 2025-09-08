@@ -43,18 +43,7 @@ export default function Footer() {
                     }}
                 >
                     <span>Made with</span>
-                    <motion.span 
-                        className="text-red-500"
-                        animate={{ scale: 1.2 }}
-                        transition={{ 
-                            duration: 1,
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                            ease: "easeInOut"
-                        }}
-                    >
-                        ♥
-                    </motion.span>
+                    <span role="img" aria-label="heart"> ❤️ </span>
                     <span>by LunarcatOwO using</span>
                     <div>
                         <Image 
