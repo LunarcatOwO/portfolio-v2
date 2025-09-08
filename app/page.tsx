@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 "use client";
-import Footer from "../components/Footer";
 import TechCardSection from "../components/TechCard";
 import ProjectCard from "../components/ProjectCard";
 import ProfilePicture from "../components/ProfilePicture";
@@ -68,7 +67,7 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-full flex flex-col bg-background text-foreground">
+    <>
       <motion.main
         className="flex-1 max-w-6xl mx-auto px-6 py-16"
         variants={containerVariants}
@@ -159,18 +158,6 @@ export default function Page() {
           </motion.section>
         </motion.div>
       </motion.main>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          type: "spring" as const,
-          stiffness: 150,
-          damping: 25,
-          delay: 0.8 
-        }}
-      >
-        <Footer />
-      </motion.div>
-    </div>
+    </>
   );
 }

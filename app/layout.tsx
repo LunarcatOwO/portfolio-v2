@@ -18,6 +18,7 @@ import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
+import Footer from "../components/Footer";
 
 // Fonts are preconfigured with CSS variables:
 // `--font-geist-sans` and `--font-geist-mono`
@@ -44,7 +45,12 @@ export default function RootLayout({
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased font-sans h-full`}
       >
-        {children}
+        <div className="min-h-full flex flex-col bg-background text-foreground">
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
