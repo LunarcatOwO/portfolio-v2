@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -76,11 +76,39 @@ export function TechCard({ name, description, icon }: TechCardProps) {
 export default function TechCardSection({ 
   techCards, 
   title = "Things I Use", 
-  initialDisplayCount = 6 
+  initialDisplayCount = 9 
 }: TechCardSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [columns, setColumns] = useState<1 | 2 | 3>(3);
 
-  const displayedTechCards = isExpanded ? techCards : techCards.slice(0, initialDisplayCount);
+  // Determine current column count based on Tailwind breakpoints
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const sm = window.matchMedia('(min-width: 640px)');
+    const md = window.matchMedia('(min-width: 768px)');
+
+    const update = () => {
+      if (md.matches) {
+        setColumns(3);
+      } else if (sm.matches) {
+        setColumns(2);
+      } else {
+        setColumns(1);
+      }
+    };
+
+    update();
+    sm.addEventListener('change', update);
+    md.addEventListener('change', update);
+    return () => {
+      sm.removeEventListener('change', update);
+      md.removeEventListener('change', update);
+    };
+  }, []);
+
+  const responsiveDisplayCount = columns === 1 ? 3 : columns === 2 ? 4 : initialDisplayCount;
+  const displayedTechCards = isExpanded ? techCards : techCards.slice(0, responsiveDisplayCount);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -120,7 +148,7 @@ export default function TechCardSection({
         {title}
       </motion.h2>
       <motion.div 
-        className="grid grid-cols-3 md:grid-cols-3 gap-4"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -142,7 +170,7 @@ export default function TechCardSection({
           ))}
         </AnimatePresence>
       </motion.div>
-      {techCards.length > initialDisplayCount && (
+      {techCards.length > responsiveDisplayCount && (
         <motion.div 
           className="flex justify-center mt-6"
           initial={{ opacity: 0 }}

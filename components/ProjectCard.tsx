@@ -100,7 +100,8 @@ export default function ProjectCard({ name, description, status, technologies, l
         }
       }}
     >
-      <motion.div className="flex items-start gap-4" variants={itemVariants}>
+      {/* Responsive layout: stack on mobile, row on larger screens */}
+      <motion.div className="flex flex-col gap-4 sm:flex-row sm:items-start" variants={itemVariants}>
         <motion.div
           whileHover={{ 
             scale: 1.1, 
@@ -124,7 +125,7 @@ export default function ProjectCard({ name, description, status, technologies, l
             />
           )}
         </motion.div>
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <h3 className="text-xl font-semibold mb-2">
             {name}
           </h3>
@@ -147,12 +148,13 @@ export default function ProjectCard({ name, description, status, technologies, l
             ))}
           </div>
         </div>
-        <motion.div variants={itemVariants} className="flex-shrink-0">
+        {/* CTA button goes full-width on mobile to avoid squish */}
+        <motion.div variants={itemVariants} className="sm:self-start">
           <a 
             href={link} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 group"
+            className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 group"
           >
             View Project
             <span className="group-hover:translate-x-1 transition-transform duration-200">
