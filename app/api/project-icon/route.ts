@@ -50,64 +50,114 @@ export async function GET(request: NextRequest) {
   }
 
   const { owner, repo } = parsed;
-  
+
   // Common icon extensions to check
   const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
   const branches = ['main', 'master'];
-  
-  try {
-    // Try to find project icon in different branches and extensions
+
+  async function findRealIcon(): Promise<{ url: string; contentType: string } | null> {
     for (const branch of branches) {
       for (const ext of extensions) {
         const iconUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/project-icon.${ext}`;
-        
         try {
           const response = await fetch(iconUrl, { method: 'HEAD' });
-          
           if (response.ok) {
-            // Found the icon, now fetch it
-            const imageResponse = await fetch(iconUrl);
-            
-            if (imageResponse.ok) {
-              const imageBuffer = await imageResponse.arrayBuffer();
-              const contentType = imageResponse.headers.get('content-type') || `image/${ext}`;
-
-              // Return the image with caching headers (1 hour cache)
-              return new NextResponse(imageBuffer, {
-                headers: {
-                  'Content-Type': contentType,
-                  'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-                },
-              });
-            }
+            const contentType = response.headers.get('content-type') || `image/${ext}`;
+            return { url: iconUrl, contentType };
           }
         } catch {
-          // Continue to next extension/branch
+          // Try next option
           continue;
         }
+      }
+    }
+    return null;
+  }
+
+  try {
+    const found = await findRealIcon();
+    if (found) {
+      const imageResponse = await fetch(found.url);
+      if (imageResponse.ok) {
+        const imageBuffer = await imageResponse.arrayBuffer();
+        const contentType = imageResponse.headers.get('content-type') || found.contentType;
+        return new NextResponse(imageBuffer, {
+          headers: {
+            'Content-Type': contentType,
+            'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+            'X-Project-Icon': 'real',
+          },
+        });
       }
     }
 
     // No icon found, generate and return fallback SVG
     const fallbackSvg = generateFallbackIcon(repo);
-    
     return new NextResponse(fallbackSvg, {
       headers: {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        'X-Project-Icon': 'fallback',
       },
     });
   } catch (error) {
     console.error('Error fetching project icon:', error);
-    
-    // Even on error, return fallback icon instead of error response
     const fallbackSvg = generateFallbackIcon(repo);
-    
     return new NextResponse(fallbackSvg, {
       headers: {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        'X-Project-Icon': 'fallback',
       },
     });
   }
+}
+
+// Lightweight HEAD handler so clients can check whether the icon is real or fallback
+export async function HEAD(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const repoUrl = searchParams.get('repoUrl');
+
+  if (!repoUrl) {
+    return new NextResponse(null, { status: 400 });
+  }
+
+  const parsed = parseGitHubUrl(repoUrl);
+  if (!parsed) {
+    return new NextResponse(null, { status: 400 });
+  }
+
+  const { owner, repo } = parsed;
+  const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
+  const branches = ['main', 'master'];
+
+  for (const branch of branches) {
+    for (const ext of extensions) {
+      const iconUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/project-icon.${ext}`;
+      try {
+        const response = await fetch(iconUrl, { method: 'HEAD' });
+        if (response.ok) {
+          const contentType = response.headers.get('content-type') || `image/${ext}`;
+          return new NextResponse(null, {
+            headers: {
+              'Content-Type': contentType,
+              'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+              'X-Project-Icon': 'real',
+            },
+          });
+        }
+      } catch {
+        continue;
+      }
+    }
+  }
+
+  // Fallback indicator
+  return new NextResponse(null, {
+    headers: {
+      'Content-Type': 'image/svg+xml',
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+      'X-Project-Icon': 'fallback',
+    },
+  });
 }
