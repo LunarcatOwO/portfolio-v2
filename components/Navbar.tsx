@@ -34,12 +34,12 @@ const navigationItems: NavItem[] = [
     label: "home",
     icon: Home,
     exact: true, // Only highlight on exact "/" match
-  }
-  // {
-  //   href: "/contact",
-  //   label: "contact",
-  //   icon: Mail,
-  // },
+  },
+  {
+    href: "mailto:root@lunarcatowo.space",
+    label: "contact",
+    icon: Mail,
+  },
 ];
 
 export default function Navbar() {
