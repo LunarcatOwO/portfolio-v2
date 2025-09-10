@@ -18,6 +18,31 @@ import { NextRequest, NextResponse } from 'next/server';
 import { parseGitHubUrl } from '../../../utils/github-utils';
 import { projectIconCache } from '../../../utils/cache';
 
+// Helper function to get repository metadata including default branch
+async function getRepositoryMetadata(owner: string, repo: string): Promise<{ defaultBranch: string } | null> {
+  try {
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
+    const response = await fetch(apiUrl, {
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'portfolio-v2'
+      }
+    });
+    
+    if (!response.ok) {
+      return null;
+    }
+    
+    const data = await response.json();
+    return {
+      defaultBranch: data.default_branch
+    };
+  } catch (error) {
+    console.error('Error fetching repository metadata:', error);
+    return null;
+  }
+}
+
 // Function to generate a fallback SVG icon
 function generateFallbackIcon(projectName: string): string {
   const letter = projectName.charAt(0).toUpperCase();
@@ -72,7 +97,10 @@ export async function GET(request: NextRequest) {
 
     // Common icon extensions to check
     const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
-    const branches = ['main', 'master'];
+    
+    // Get the repository's default branch
+    const repoMetadata = await getRepositoryMetadata(owner, repo);
+    const branches = repoMetadata ? [repoMetadata.defaultBranch] : ['main', 'master']; // fallback to common branches if API fails
 
     async function findRealIcon(): Promise<{ url: string; contentType: string } | null> {
       for (const branch of branches) {
@@ -189,7 +217,10 @@ export async function HEAD(request: NextRequest) {
   }
 
   const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
-  const branches = ['main', 'master'];
+  
+  // Get the repository's default branch
+  const repoMetadata = await getRepositoryMetadata(owner, repo);
+  const branches = repoMetadata ? [repoMetadata.defaultBranch] : ['main', 'master']; // fallback to common branches if API fails
 
   for (const branch of branches) {
     for (const ext of extensions) {
