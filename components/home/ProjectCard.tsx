@@ -33,15 +33,15 @@ export default function ProjectCard({ name, description, status, technologies, l
     switch (status.toLowerCase()) {
       case 'active':
       case 'currently in active development':
-        return 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200';
+        return 'bg-green-900 text-green-200';
       case 'completed':
-        return 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200';
+        return 'bg-blue-900 text-blue-200';
       case 'in development':
-        return 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200';
+        return 'bg-yellow-900 text-yellow-200';
       case 'wip':
-        return 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200';
+        return 'bg-purple-900 text-purple-200';
       default:
-        return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200';
+        return 'bg-gray-800 text-gray-200';
     }
   };
 
@@ -77,7 +77,7 @@ export default function ProjectCard({ name, description, status, technologies, l
 
   return (
     <motion.div 
-      className="border border-gray-200 dark:border-gray-700 rounded-lg p-6"
+      className="border border-gray-700 rounded-lg p-6"
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
@@ -135,14 +135,14 @@ export default function ProjectCard({ name, description, status, technologies, l
               {status}
             </span>
           </div>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
+          <p className="text-gray-300 mb-4">
             {description}
           </p>
           <div className="flex flex-wrap gap-2">
             {technologies.map((tech) => (
               <span 
                 key={tech} 
-                className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-xs rounded hover:scale-105 transition-transform duration-200"
+                className="px-2 py-1 bg-gray-800 text-gray-200 text-xs rounded hover:scale-105 transition-transform duration-200"
               >
                 {tech}
               </span>
@@ -155,7 +155,7 @@ export default function ProjectCard({ name, description, status, technologies, l
             href={link} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 group"
+            className="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 group"
           >
             View Project
             <span className="group-hover:translate-x-1 transition-transform duration-200">

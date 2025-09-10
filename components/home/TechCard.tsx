@@ -40,7 +40,7 @@ interface TechCardSectionProps {
 export function TechCard({ name, description, icon }: TechCardProps) {
   return (
     <motion.div 
-      className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg transition-all duration-200"
+      className="p-4 border border-gray-700 rounded-lg transition-all duration-200"
       whileHover={{ 
         scale: 1.02,
         borderColor: "rgb(156 163 175)",
@@ -66,7 +66,7 @@ export function TechCard({ name, description, icon }: TechCardProps) {
         )}
       </div>
       <h3 className="font-semibold mb-1">{name}</h3>
-      <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+      <p className="text-sm text-gray-400">{description}</p>
     </motion.div>
   );
 }
@@ -187,7 +187,7 @@ export default function TechCardSection({
         >
           <motion.button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="p-2 sm:p-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="p-2 sm:p-3 text-gray-400 hover:text-gray-200 transition-colors rounded-full hover:bg-gray-800"
             aria-label={isExpanded ? "Show less technologies" : "Show more technologies"}
             whileHover={{ 
               scale: 1.1,

@@ -63,7 +63,7 @@ export default function ProfilePicture({ username, className = "w-16 h-16", fall
   if (avatarUrl && !error) {
     return (
       <motion.div 
-        className={`${className} rounded-full overflow-hidden flex items-center justify-center bg-gray-100 dark:bg-gray-800 relative flex-shrink-0 aspect-square`}
+        className={`${className} rounded-full overflow-hidden flex items-center justify-center bg-gray-800 relative flex-shrink-0 aspect-square`}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ 

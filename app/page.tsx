@@ -103,16 +103,16 @@ export default function Page() {
                 />
                 <div className="flex-1 min-w-0">
                   <h1 className="text-4xl font-bold mb-2">LunarcatOwO</h1>
-                  <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-lg text-gray-400 mb-4">
                     Student Developer
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300 max-w-2xl leading-relaxed mt-2">
+                  <p className="text-gray-300 max-w-2xl leading-relaxed mt-2">
                     Just a random student developer who also happens to be techincally a full stack developer lol.
                   </p>
                   <div className="flex gap-4 mt-6">
                     <a
                       href="https://github.com/LunarcatOwO"
-                      className="text-dark-gray-600 hover:text-dark-gray-800 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+                      className="text-gray-400 hover:text-gray-300 transition-colors"
                       aria-label="GitHub Profile"
                     >
                       <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
@@ -156,7 +156,7 @@ export default function Page() {
             {/* Latest Posts */}
             <motion.div className="mb-16" variants={itemVariants} layout>
               <h2 className="text-2xl font-bold mb-8">Social Posts</h2>
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-12 text-gray-400">
                 <p>This is where social media posts should be...</p>
                 <p className="text-sm mt-2">But for now, just pretend there&apos;s some sort of content.</p>
               </div>

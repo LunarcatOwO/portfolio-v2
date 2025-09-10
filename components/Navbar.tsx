@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
+      className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-gray-800"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -34,8 +34,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo and Title */}
           <div className="flex items-center gap-3">
-            <Terminal className="w-6 h-6 text-pink-600 dark:text-pink-400" />
-            <span className="text-xl font-semibold text-pink-600 dark:text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.5)]">
+            <Terminal className="w-6 h-6 text-pink-400" />
+            <span className="text-xl font-semibold text-pink-400 drop-shadow-[0_0_8px_rgba(236,72,153,0.5)]">
               lunarcatowo.space
             </span>
           </div>
@@ -46,8 +46,8 @@ export default function Navbar() {
               href="/"
               className={`flex items-center gap-2 font-medium transition-all duration-200 px-3 py-2 rounded-lg ${
                 pathname === "/" 
-                  ? "text-pink-600 dark:text-pink-400 bg-pink-100 dark:bg-pink-900/30 shadow-lg shadow-pink-500/20" 
-                  : "text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 hover:bg-pink-50 dark:hover:bg-pink-900/20"
+                  ? "text-pink-400 bg-pink-900/30 shadow-lg shadow-pink-500/20" 
+                  : "text-pink-400 hover:text-pink-300 hover:bg-pink-900/20"
               }`}
             >
               <Home className="w-5 h-5" />

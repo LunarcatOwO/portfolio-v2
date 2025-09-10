@@ -21,7 +21,7 @@ import { motion } from "motion/react";
 export default function Footer() {
     return (
         <motion.div 
-            className="w-full py-6 sm:py-8 border-t border-gray-200 dark:border-gray-800"
+            className="w-full py-6 sm:py-8 border-t border-gray-800"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -31,7 +31,7 @@ export default function Footer() {
                 damping: 25
             }}
         >
-            <div className="flex flex-col items-center justify-center text-sm text-gray-600 dark:text-gray-400 space-y-4">
+            <div className="flex flex-col items-center justify-center text-sm text-gray-400 space-y-4">
                 <motion.div 
                     className="flex items-center gap-2"
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -53,7 +53,7 @@ export default function Footer() {
                             alt="Next.js" 
                             width={75}
                             height={50}
-                            className="dark:invert"
+                            className="invert"
                         />
                     </div>
                 </motion.div>
@@ -71,7 +71,7 @@ export default function Footer() {
                     This project is{" "}
                     <a 
                         href="https://github.com/LunarcatOwO/portfolio-v2" 
-                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors underline"
+                        className="text-blue-400 hover:text-blue-300 transition-colors underline"
                     >
                         open source
                     </a>
