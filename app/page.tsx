@@ -140,7 +140,7 @@ export default function Page() {
                 <ProjectCard
                   name="Portfolio V2"
                   description="You're looking at it right now. I mean, it's nothing special."
-                  status="wip"
+                  status="Active"
                   technologies={["Next.js", "Tailwind CSS"]}
                   link="https://github.com/LunarcatOwO/portfolio-v2"
                   repoUrl="https://github.com/LunarcatOwO/portfolio-v2"
