@@ -34,12 +34,12 @@ const navigationItems: NavItem[] = [
     label: "home",
     icon: Home,
     exact: true, // Only highlight on exact "/" match
-  },
-  {
-    href: "/contact",
-    label: "contact",
-    icon: Mail,
-  },
+  }
+  // {
+  //   href: "/contact",
+  //   label: "contact",
+  //   icon: Mail,
+  // },
 ];
 
 export default function Navbar() {
