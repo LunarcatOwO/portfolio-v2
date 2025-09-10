@@ -17,7 +17,6 @@
 import TechCardSection from "../components/home/TechCard";
 import ProjectCard from "../components/home/ProjectCard";
 import ProfilePicture from "../components/ProfilePicture";
-import Navbar from "../components/Navbar";
 import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript } from "simple-icons";
 import { Zap, Coffee } from "lucide-react";
 import { motion } from "motion/react";
@@ -68,9 +67,7 @@ export default function Page() {
   };
 
   return (
-    <>
-      <Navbar />
-      <motion.main
+    <motion.main
         className="flex-1 max-w-6xl mx-auto px-6 py-16"
         variants={containerVariants}
         initial="visible"
@@ -162,6 +159,5 @@ export default function Page() {
           </motion.section>
         </motion.div>
       </motion.main>
-    </>
   );
 }

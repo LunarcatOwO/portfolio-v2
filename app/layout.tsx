@@ -19,6 +19,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import Script from "next/script";
 
 // Fonts are preconfigured with CSS variables:
@@ -47,6 +48,7 @@ export default function RootLayout({
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased font-sans h-full`}
       >
         <div className="min-h-full flex flex-col bg-background text-foreground">
+          <Navbar />
           <main className="flex-1 min-h-screen">
             {children}
           </main>
