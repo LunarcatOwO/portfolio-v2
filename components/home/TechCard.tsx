@@ -110,7 +110,7 @@ export default function TechCardSection({
   const displayedTechCards = isExpanded ? techCards : techCards.slice(0, responsiveDisplayCount);
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -136,9 +136,8 @@ export default function TechCardSection({
     <section className="mb-16">
       <motion.h2 
         className="text-2xl font-bold mb-8"
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
+        initial={{ opacity: 1, x: 0 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ 
           type: "spring" as const,
           stiffness: 200,
@@ -150,9 +149,8 @@ export default function TechCardSection({
       <motion.div 
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
         variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2 }}
+        initial="visible"
+        animate="visible"
       >
         <AnimatePresence mode="popLayout">
           {displayedTechCards.map((tech, index) => (

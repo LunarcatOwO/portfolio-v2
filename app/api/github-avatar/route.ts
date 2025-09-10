@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { NextRequest, NextResponse } from 'next/server';
+import { avatarCache } from '../../../utils/cache';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -24,7 +25,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Username is required' }, { status: 400 });
   }
 
+  const cacheKey = `avatar:${username}`;
+
   try {
+    // Check server-side cache first
+    const cachedData = avatarCache.get(cacheKey);
+    if (cachedData) {
+      console.log(`Cache hit for avatar: ${username}`);
+      return new NextResponse(cachedData.buffer, {
+        headers: {
+          'Content-Type': cachedData.contentType,
+          'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+          'X-Cache': 'HIT',
+        },
+      });
+    }
+
+    console.log(`Cache miss for avatar: ${username}, fetching from GitHub...`);
+
     // Fetch user data from GitHub API
     const response = await fetch(`https://api.github.com/users/${username}`, {
       headers: {
@@ -53,11 +71,18 @@ export async function GET(request: NextRequest) {
     const imageBuffer = await imageResponse.arrayBuffer();
     const contentType = imageResponse.headers.get('content-type') || 'image/jpeg';
 
+    // Store in server cache for 1 hour
+    avatarCache.set(cacheKey, {
+      buffer: imageBuffer,
+      contentType,
+    }, 60 * 60 * 1000); // 1 hour
+
     // Return the image with caching headers (1 hour cache)
     return new NextResponse(imageBuffer, {
       headers: {
         'Content-Type': contentType,
         'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        'X-Cache': 'MISS',
       },
     });
   } catch (error) {

@@ -16,6 +16,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { parseGitHubUrl } from '../../../utils/github-utils';
+import { projectIconCache } from '../../../utils/cache';
 
 // Function to generate a fallback SVG icon
 function generateFallbackIcon(projectName: string): string {
@@ -50,42 +51,68 @@ export async function GET(request: NextRequest) {
   }
 
   const { owner, repo } = parsed;
-
-  // Common icon extensions to check
-  const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
-  const branches = ['main', 'master'];
-
-  async function findRealIcon(): Promise<{ url: string; contentType: string } | null> {
-    for (const branch of branches) {
-      for (const ext of extensions) {
-        const iconUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/project-icon.${ext}`;
-        try {
-          const response = await fetch(iconUrl, { method: 'HEAD' });
-          if (response.ok) {
-            const contentType = response.headers.get('content-type') || `image/${ext}`;
-            return { url: iconUrl, contentType };
-          }
-        } catch {
-          // Try next option
-          continue;
-        }
-      }
-    }
-    return null;
-  }
+  const cacheKey = `project-icon:${owner}/${repo}`;
 
   try {
+    // Check server-side cache first
+    const cachedData = projectIconCache.get(cacheKey);
+    if (cachedData) {
+      console.log(`Cache hit for project icon: ${owner}/${repo}`);
+      return new NextResponse(cachedData.buffer, {
+        headers: {
+          'Content-Type': cachedData.contentType,
+          'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+          'X-Project-Icon': cachedData.isReal ? 'real' : 'fallback',
+          'X-Cache': 'HIT',
+        },
+      });
+    }
+
+    console.log(`Cache miss for project icon: ${owner}/${repo}, searching for icon...`);
+
+    // Common icon extensions to check
+    const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
+    const branches = ['main', 'master'];
+
+    async function findRealIcon(): Promise<{ url: string; contentType: string } | null> {
+      for (const branch of branches) {
+        for (const ext of extensions) {
+          const iconUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/project-icon.${ext}`;
+          try {
+            const response = await fetch(iconUrl, { method: 'HEAD' });
+            if (response.ok) {
+              const contentType = response.headers.get('content-type') || `image/${ext}`;
+              return { url: iconUrl, contentType };
+            }
+          } catch {
+            // Try next option
+            continue;
+          }
+        }
+      }
+      return null;
+    }
+
     const found = await findRealIcon();
     if (found) {
       const imageResponse = await fetch(found.url);
       if (imageResponse.ok) {
         const imageBuffer = await imageResponse.arrayBuffer();
         const contentType = imageResponse.headers.get('content-type') || found.contentType;
+        
+        // Cache the real icon
+        projectIconCache.set(cacheKey, {
+          buffer: imageBuffer,
+          contentType,
+          isReal: true,
+        }, 60 * 60 * 1000); // 1 hour
+
         return new NextResponse(imageBuffer, {
           headers: {
             'Content-Type': contentType,
             'Cache-Control': 'public, max-age=3600, s-maxage=3600',
             'X-Project-Icon': 'real',
+            'X-Cache': 'MISS',
           },
         });
       }
@@ -93,21 +120,39 @@ export async function GET(request: NextRequest) {
 
     // No icon found, generate and return fallback SVG
     const fallbackSvg = generateFallbackIcon(repo);
+    
+    // Cache the fallback icon
+    projectIconCache.set(cacheKey, {
+      buffer: fallbackSvg,
+      contentType: 'image/svg+xml',
+      isReal: false,
+    }, 60 * 60 * 1000); // 1 hour
+
     return new NextResponse(fallbackSvg, {
       headers: {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': 'public, max-age=3600, s-maxage=3600',
         'X-Project-Icon': 'fallback',
+        'X-Cache': 'MISS',
       },
     });
   } catch (error) {
     console.error('Error fetching project icon:', error);
     const fallbackSvg = generateFallbackIcon(repo);
+    
+    // Cache the fallback icon even on error
+    projectIconCache.set(cacheKey, {
+      buffer: fallbackSvg,
+      contentType: 'image/svg+xml',
+      isReal: false,
+    }, 60 * 60 * 1000); // 1 hour
+
     return new NextResponse(fallbackSvg, {
       headers: {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': 'public, max-age=3600, s-maxage=3600',
         'X-Project-Icon': 'fallback',
+        'X-Cache': 'MISS',
       },
     });
   }
@@ -128,6 +173,21 @@ export async function HEAD(request: NextRequest) {
   }
 
   const { owner, repo } = parsed;
+  const cacheKey = `project-icon:${owner}/${repo}`;
+
+  // Check cache first for HEAD requests too
+  const cachedData = projectIconCache.get(cacheKey);
+  if (cachedData) {
+    return new NextResponse(null, {
+      headers: {
+        'Content-Type': cachedData.contentType,
+        'Cache-Control': 'public, max-age=3600, s-maxage=3600',
+        'X-Project-Icon': cachedData.isReal ? 'real' : 'fallback',
+        'X-Cache': 'HIT',
+      },
+    });
+  }
+
   const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
   const branches = ['main', 'master'];
 
@@ -143,6 +203,7 @@ export async function HEAD(request: NextRequest) {
               'Content-Type': contentType,
               'Cache-Control': 'public, max-age=3600, s-maxage=3600',
               'X-Project-Icon': 'real',
+              'X-Cache': 'MISS',
             },
           });
         }
@@ -158,6 +219,7 @@ export async function HEAD(request: NextRequest) {
       'Content-Type': 'image/svg+xml',
       'Cache-Control': 'public, max-age=3600, s-maxage=3600',
       'X-Project-Icon': 'fallback',
+      'X-Cache': 'MISS',
     },
   });
 }

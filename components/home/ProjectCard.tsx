@@ -47,7 +47,7 @@ export default function ProjectCard({ name, description, status, technologies, l
 
   // Animation variants for orchestrated stagger timing
   const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 1, y: 0 },
     visible: {
       opacity: 1,
       y: 0,
@@ -56,14 +56,14 @@ export default function ProjectCard({ name, description, status, technologies, l
         stiffness: 200,
         damping: 25,
         when: "beforeChildren" as const,
-        delayChildren: 0.3,
-        staggerChildren: 0.08
+        delayChildren: 0.1,
+        staggerChildren: 0.05
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 1, y: 0 },
     visible: {
       opacity: 1,
       y: 0,
@@ -79,9 +79,8 @@ export default function ProjectCard({ name, description, status, technologies, l
     <motion.div 
       className="border border-gray-700 rounded-lg p-6"
       variants={cardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      initial="visible"
+      animate="visible"
       whileHover={{ 
         scale: 1.02,
         borderColor: "rgb(156 163 175)",
