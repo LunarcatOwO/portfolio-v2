@@ -28,11 +28,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    // Workaround for Turbopack build error with Motion library
-    // See: https://github.com/vercel/next.js/issues/82584
-    turbopackScopeHoisting: false
-  },
 };
 
 export default withSentryConfig(nextConfig, {
