@@ -7,8 +7,7 @@
     "build:webpack": "next build",
     "start": "next start",
     "lint": "eslint",
-    "license:add": "node scripts/add-license.js",
-    "license:check": "node scripts/add-license.js --check"
+    "update-packages": "ncu -u && npm install"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.10.0",
@@ -28,6 +27,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
+    "node-check-updates": "^0.1.9",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
