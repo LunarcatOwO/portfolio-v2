@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     const cachedData = avatarCache.get(cacheKey);
     if (cachedData) {
       console.log(`Cache hit for avatar: ${username}`);
-      return new NextResponse(cachedData.buffer, {
+      return new NextResponse(Buffer.from(cachedData.buffer), {
         headers: {
           'Content-Type': cachedData.contentType,
           'Cache-Control': 'public, max-age=3600, s-maxage=3600',
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
     }, 60 * 60 * 1000); // 1 hour
 
     // Return the image with caching headers (1 hour cache)
-    return new NextResponse(imageBuffer, {
+    return new NextResponse(Buffer.from(imageBuffer), {
       headers: {
         'Content-Type': contentType,
         'Cache-Control': 'public, max-age=3600, s-maxage=3600',
