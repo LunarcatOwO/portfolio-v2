@@ -17,7 +17,7 @@
 import TechCardSection from "../components/home/TechCard";
 import ProjectCard from "../components/home/ProjectCard";
 import ProfilePicture from "../components/ProfilePicture";
-import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript } from "simple-icons";
+import * as SimpleIcons from "simple-icons";
 import { Zap, Coffee } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -31,12 +31,12 @@ export default function Page() {
 
   // Tech Cards Data
   const techCards = [
-    { name: "Node.js", description: "Most my things are made with this", icon: <SimpleIcon icon={siNodedotjs} className="w-8 h-8 text-green-600" /> },
-    { name: "Next.js", description: "Frontend stuff (Don't have much experience yet)", icon: <SimpleIcon icon={siNextdotjs} className="w-8 h-8 text-blue-600" /> },
-    { name: "Typescript", description: "Backend stuff (for this site only for now...)", icon: <SimpleIcon icon={siTypescript} className="w-8 h-8 text-blue-600" /> },
-    { name: "Docker", description: "Container stuff ig", icon: <SimpleIcon icon={siDocker} className="w-8 h-8 text-blue-500" /> },
+    { name: "Node.js", description: "Most my things are made with this", icon: <SimpleIcon icon={SimpleIcons.siNodedotjs} className="w-8 h-8 text-green-600" /> },
+    { name: "Next.js", description: "Frontend stuff (Don't have much experience yet)", icon: <SimpleIcon icon={SimpleIcons.siNextdotjs} className="w-8 h-8 text-blue-600" /> },
+    { name: "Typescript", description: "Backend stuff (for this site only for now...)", icon: <SimpleIcon icon={SimpleIcons.siTypescript} className="w-8 h-8 text-blue-600" /> },
+    { name: "Docker", description: "Container stuff ig", icon: <SimpleIcon icon={SimpleIcons.siDocker} className="w-8 h-8 text-blue-500" /> },
     { name: "Java", description: "I don't even know.", icon: <Coffee className="w-8 h-8 text-orange-600" /> },
-    { name: "Git", description: "Mostly Github ¯\\_(ツ)_/¯", icon: <SimpleIcon icon={siGit} className="w-8 h-8 text-red-500" /> },
+    { name: "Git", description: "Mostly Github ¯\\_(ツ)_/¯", icon: <SimpleIcon icon={SimpleIcons.siGit} className="w-8 h-8 text-red-500" /> },
     { name: "Random APIs", description: "Just here for stuff I guess", icon: <Zap className="w-8 h-8 text-purple-500" /> },
   ];
 
@@ -111,7 +111,7 @@ export default function Page() {
                       aria-label="GitHub Profile"
                     >
                       <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
-                        <path d={siGithub.path} />
+                        <path d={SimpleIcons.siGithub.path} />
                       </svg>
                     </a>
                   </div>
