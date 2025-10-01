@@ -85,8 +85,8 @@ export async function GET(request: NextRequest) {
       console.log(`Cache hit for project icon: ${owner}/${repo}`);
       return new NextResponse(
         typeof cachedData.buffer === 'string' 
-          ? cachedData.buffer 
-          : Buffer.from(cachedData.buffer), 
+          ? Buffer.from(cachedData.buffer) 
+          : cachedData.buffer, 
         {
         headers: {
           'Content-Type': cachedData.contentType,
