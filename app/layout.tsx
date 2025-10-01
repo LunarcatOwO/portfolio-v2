@@ -47,6 +47,36 @@ export default function RootLayout({
       <body
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased font-sans h-full`}
       >
+        <noscript>
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#000',
+            color: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            fontFamily: 'var(--font-geist-mono), monospace'
+          }}>
+            <div style={{
+              textAlign: 'center',
+              padding: '2rem',
+              maxWidth: '500px'
+            }}>
+              <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>JavaScript Required</h1>
+              <p style={{ fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>
+                This website requires JavaScript to be enabled to function properly.
+              </p>
+              <p style={{ fontSize: '0.9rem', color: '#888' }}>
+                Please enable JavaScript in your browser settings and reload the page.
+              </p>
+            </div>
+          </div>
+        </noscript>
         <div className="min-h-full flex flex-col bg-background text-foreground">
           <Navbar />
           <main className="flex-1 min-h-screen">
