@@ -83,7 +83,11 @@ export async function GET(request: NextRequest) {
     const cachedData = projectIconCache.get(cacheKey);
     if (cachedData) {
       console.log(`Cache hit for project icon: ${owner}/${repo}`);
-      return new NextResponse(cachedData.buffer, {
+      return new NextResponse(
+        typeof cachedData.buffer === 'string' 
+          ? Buffer.from(cachedData.buffer) 
+          : cachedData.buffer, 
+        {
         headers: {
           'Content-Type': cachedData.contentType,
           'Cache-Control': 'public, max-age=3600, s-maxage=3600',
@@ -135,7 +139,7 @@ export async function GET(request: NextRequest) {
           isReal: true,
         }, 60 * 60 * 1000); // 1 hour
 
-        return new NextResponse(imageBuffer, {
+        return new NextResponse(Buffer.from(imageBuffer), {
           headers: {
             'Content-Type': contentType,
             'Cache-Control': 'public, max-age=3600, s-maxage=3600',
