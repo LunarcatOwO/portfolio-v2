@@ -29,95 +29,79 @@ export default function DOMIntegrityChecker() {
           }
           
           function initDOMProtection() {
-            // Store the initial DOM structure after a longer delay to allow Next.js hydration and initial animations
+            // Store the initial DOM structure after a delay to allow Next.js hydration
             setTimeout(() => {
               const originalStructure = captureProtectedStructure();
               
-              // Check every 3 seconds for unauthorized structural changes
+              // Check every 2 seconds for unauthorized structural changes
               setInterval(() => {
                 const currentStructure = captureProtectedStructure();
                 if (currentStructure !== originalStructure) {
                   console.warn('Unauthorized DOM modification detected. Reverting...');
                   location.reload();
                 }
-              }, 3000);
-            }, 2000);
+              }, 2000);
+            }, 3000);
           }
           
           function captureProtectedStructure() {
-            const clone = document.documentElement.cloneNode(true);
+            const clone = document.body.cloneNode(true);
             
-            // Remove scripts and styles completely
-            clone.querySelectorAll('script, style').forEach(el => el.remove());
+            // Remove elements that are explicitly marked as dynamic
+            const dynamicSelectors = [
+              '[data-dynamic]',
+              '[data-allow-changes]',
+              '[data-user-content]',
+              'input',
+              'textarea',
+              'select',
+              '[contenteditable="true"]',
+              'script',
+              'style'
+            ];
             
-            // Process all elements to normalize them
-            clone.querySelectorAll('*').forEach(el => {
-              // Remove ALL attributes except structural ones
-              const keepAttributes = ['id', 'role', 'type', 'href', 'src', 'alt', 'name'];
-              const attrs = Array.from(el.attributes);
-              attrs.forEach(attr => {
-                if (!keepAttributes.includes(attr.name) && !attr.name.startsWith('data-')) {
-                  el.removeAttribute(attr.name);
-                }
-              });
-              
-              // Remove all inline styles
-              el.removeAttribute('style');
-              
-              // Remove all classes (animations change these constantly)
-              el.removeAttribute('class');
-              
-              // Remove all dynamic data attributes
-              const dynamicDataAttrs = [
-                'data-state',
-                'data-focused',
-                'data-hover',
-                'data-active',
-                'data-headlessui-state',
-                'data-open',
-                'data-closed',
-                'data-enter',
-                'data-leave'
-              ];
-              dynamicDataAttrs.forEach(attr => el.removeAttribute(attr));
-              
-              // Normalize form elements
-              if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
-                el.removeAttribute('value');
-                el.removeAttribute('checked');
-                if (el.value !== undefined) el.value = '';
-              }
+            dynamicSelectors.forEach(selector => {
+              clone.querySelectorAll(selector).forEach(el => el.remove());
             });
             
-            // Only return the structure (tag hierarchy and text content)
-            return getStructureSignature(clone);
+            // Get all text content and structure
+            return getDetailedSignature(clone);
           }
           
-          function getStructureSignature(node) {
-            // Create a simplified signature of the DOM structure
+          function getDetailedSignature(element) {
             let signature = '';
             
-            function traverse(el, depth) {
-              if (el.nodeType === 1) { // Element node
-                const tag = el.tagName.toLowerCase();
-                const id = el.getAttribute('id') || '';
-                const role = el.getAttribute('role') || '';
+            function traverse(node, depth) {
+              if (node.nodeType === 1) { // Element node
+                const tag = node.tagName.toLowerCase();
                 
-                // Only track structural elements and their IDs/roles
-                signature += depth + ':' + tag + (id ? '#' + id : '') + (role ? '[' + role + ']' : '') + '\\n';
+                // Skip elements that change during animations
+                const skipClasses = node.className && typeof node.className === 'string' ? 
+                  node.className.includes('motion') || 
+                  node.className.includes('animate') ||
+                  node.className.includes('transition') : false;
                 
-                Array.from(el.children).forEach(child => {
+                if (!skipClasses) {
+                  // Track element type and ID
+                  const id = node.id ? '#' + node.id : '';
+                  signature += depth + ':' + tag + id + '\\n';
+                }
+                
+                // Traverse children
+                Array.from(node.childNodes).forEach(child => {
                   traverse(child, depth + 1);
                 });
-              } else if (el.nodeType === 3) { // Text node
-                const text = el.textContent?.trim();
-                if (text && text.length > 0 && !text.match(/^\\s*$/)) {
-                  signature += depth + ':TEXT:' + text.substring(0, 50) + '\\n';
+                
+              } else if (node.nodeType === 3) { // Text node
+                const text = node.textContent?.trim();
+                // Only track non-empty text
+                if (text && text.length > 0) {
+                  signature += depth + ':TEXT:' + text + '\\n';
                 }
               }
             }
             
-            traverse(node, 0);
+            traverse(element, 0);
             return signature;
           }
         })();
