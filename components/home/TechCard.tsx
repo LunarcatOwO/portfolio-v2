@@ -151,7 +151,6 @@ export default function TechCardSection({
         variants={containerVariants}
         initial="visible"
         animate="visible"
-        data-dynamic
       >
         <AnimatePresence mode="popLayout">
           {displayedTechCards.map((tech, index) => (

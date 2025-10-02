@@ -21,7 +21,6 @@ import "./globals.css";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import NoScriptWarning from "../components/NoScriptWarning";
-import DOMIntegrityChecker from "../components/DOMIntegrityChecker";
 import Script from "next/script";
 
 // Fonts are preconfigured with CSS variables:
@@ -65,8 +64,6 @@ export default function RootLayout({
             }
           `}
         </Script>
-        
-        <DOMIntegrityChecker />
       </body>
     </html>
   );
