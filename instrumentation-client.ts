@@ -14,7 +14,7 @@ Sentry.init({
   ],
 
   // Define which URLs should have distributed tracing headers attached
-  tracePropagationTargets: ["localhost", /^https:\/\/lunarcatowo\.space\/api/],
+  tracePropagationTargets: ["localhost", /^https:\/\/lunarcatowo\.space/],
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 1,
