@@ -8,6 +8,9 @@ import * as Sentry from "@sentry/nextjs";
 Sentry.init({
   dsn: "https://e2cceb3d71665f34cf92ba27cdba92a0@o4509573040504832.ingest.us.sentry.io/4509964743213056",
 
+  // Define which URLs should have distributed tracing headers attached
+  tracePropagationTargets: ["localhost", /^https:\/\/lunarcatowo\.space\/api/],
+
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 1,
 
