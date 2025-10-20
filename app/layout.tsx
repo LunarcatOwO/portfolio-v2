@@ -31,6 +31,27 @@ export const metadata: Metadata = {
   description: "Just doing things.",
   keywords: ["developer", "programming", "dev"],
   authors: [{ name: "LunarcatOwO" }],
+  openGraph: {
+    title: "LunarcatOwO.space",
+    description: "Just doing things.",
+    url: "https://lunarcatowo.space",
+    siteName: "LunarcatOwO.space",
+    type: "website",
+    images: [
+      {
+        url: "https://lunarcatowo.space/api/github-avatar?username=LunarcatOwO",
+        width: 1200,
+        height: 630,
+        alt: "LunarcatOwO",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LunarcatOwO.space",
+    description: "Just doing things.",
+    images: ["https://lunarcatowo.space/api/github-avatar?username=LunarcatOwO"],
+  },
 };
 
 export const viewport: Viewport = {
