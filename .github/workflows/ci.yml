@@ -15,6 +15,7 @@ concurrency:
 jobs:
     build:
         runs-on: ubuntu-latest
+        environment: Sentry
         permissions:
           contents: write
           packages: write
