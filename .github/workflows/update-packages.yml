@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Update packages
-        run: npx ncu -u && npm install
+        run: npm run update-packages
 
       - name: Commit and push changes
         run: |
