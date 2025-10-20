@@ -7,7 +7,7 @@
     "build:webpack": "next build",
     "start": "next start",
     "lint": "eslint",
-    "update-packages": "npx ncu -u && npm install"
+    "update-packages": "npx node-check-updates -u && npm install"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.11.0",
