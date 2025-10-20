@@ -1,0 +1,261 @@
+name: Clear All Caches
+
+on:
+  workflow_dispatch:
+    inputs:
+      cache_type:
+        description: 'Type of cache to clear'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - all-aggressive
+        - docker
+        - npm
+        - buildx
+
+jobs:
+  clear-cache:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Clear All Caches
+        if: ${{ github.event.inputs.cache_type == 'all' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🗑️ Clearing all caches..."
+          
+          # Function to get all cache IDs with pagination
+          get_all_cache_ids() {
+            local page=1
+            local per_page=100
+            local all_ids=""
+            
+            while true; do
+              echo "📄 Fetching page $page..."
+              local response=$(gh api "repos/${{ github.repository }}/actions/caches?per_page=$per_page&page=$page")
+              local ids=$(echo "$response" | jq -r '.actions_caches[].id')
+              
+              if [ -z "$ids" ]; then
+                break
+              fi
+              
+              all_ids="$all_ids $ids"
+              page=$((page + 1))
+              
+              # Check if we got less than per_page results (last page)
+              local count=$(echo "$ids" | wc -w)
+              if [ $count -lt $per_page ]; then
+                break
+              fi
+            done
+            
+            echo "$all_ids"
+          }
+          
+          # Get all cache IDs
+          caches=$(get_all_cache_ids)
+          
+          if [ -z "$caches" ]; then
+            echo "ℹ️ No caches found to delete"
+          else
+            # Count total caches
+            total_caches=$(echo "$caches" | wc -w)
+            echo "📋 Found $total_caches cache entries total"
+            
+            # Delete each cache with progress
+            counter=0
+            for cache_id in $caches; do
+              counter=$((counter + 1))
+              echo "🗑️ Deleting cache $counter/$total_caches (ID: $cache_id)"
+              gh api --method DELETE repos/${{ github.repository }}/actions/caches/$cache_id || true
+              
+              # Add small delay to avoid rate limiting
+              if [ $((counter % 20)) -eq 0 ]; then
+                echo "⏸️ Pausing briefly to avoid rate limits..."
+                sleep 2
+              fi
+            done
+            
+            echo "✅ All $total_caches caches cleared successfully!"
+          fi
+
+      - name: Clear All Caches (Aggressive)
+        if: ${{ github.event.inputs.cache_type == 'all-aggressive' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🗑️ Clearing ALL caches aggressively..."
+          
+          total_deleted=0
+          round=1
+          
+          while true; do
+            echo "🔄 Round $round - Checking for remaining caches..."
+            
+            # Get first batch of caches (100 max per API call)
+            caches=$(gh api "repos/${{ github.repository }}/actions/caches?per_page=100" --jq '.actions_caches[].id')
+            
+            if [ -z "$caches" ]; then
+              echo "✅ No more caches found! Total deleted: $total_deleted"
+              break
+            fi
+            
+            batch_count=$(echo "$caches" | wc -w)
+            echo "📋 Found $batch_count caches in this batch"
+            
+            # Delete this batch
+            counter=0
+            for cache_id in $caches; do
+              counter=$((counter + 1))
+              total_deleted=$((total_deleted + 1))
+              echo "🗑️ Deleting cache $counter/$batch_count (Total: $total_deleted) - ID: $cache_id"
+              gh api --method DELETE repos/${{ github.repository }}/actions/caches/$cache_id || true
+              
+              # Rate limiting pause
+              if [ $((counter % 10)) -eq 0 ]; then
+                sleep 1
+              fi
+            done
+            
+            round=$((round + 1))
+            
+            # Safety check to avoid infinite loops
+            if [ $round -gt 50 ]; then
+              echo "⚠️ Reached maximum rounds (50), stopping for safety"
+              break
+            fi
+            
+            echo "⏸️ Pausing between rounds..."
+            sleep 3
+          done
+          
+          echo "🎉 Aggressive cleanup completed! Deleted $total_deleted caches total."
+
+      - name: Clear Docker Caches Only
+        if: ${{ github.event.inputs.cache_type == 'docker' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🐳 Clearing Docker-related caches..."
+          
+          # Function to get Docker cache IDs with pagination
+          get_docker_cache_ids() {
+            local page=1
+            local per_page=100
+            local all_ids=""
+            
+            while true; do
+              echo "📄 Fetching Docker caches page $page..."
+              local response=$(gh api "repos/${{ github.repository }}/actions/caches?per_page=$per_page&page=$page")
+              local ids=$(echo "$response" | jq -r '.actions_caches[] | select(.key | contains("buildx") or contains("docker") or contains("gha")) | .id')
+              
+              if [ -z "$ids" ]; then
+                local total_on_page=$(echo "$response" | jq -r '.actions_caches | length')
+                if [ "$total_on_page" -eq 0 ]; then
+                  break
+                fi
+              else
+                all_ids="$all_ids $ids"
+              fi
+              
+              page=$((page + 1))
+              
+              # Check if we got less than per_page results (last page)
+              local count=$(echo "$response" | jq -r '.actions_caches | length')
+              if [ $count -lt $per_page ]; then
+                break
+              fi
+            done
+            
+            echo "$all_ids"
+          }
+          
+          caches=$(get_docker_cache_ids)
+          
+          if [ -z "$caches" ]; then
+            echo "ℹ️ No Docker caches found to delete"
+          else
+            total_caches=$(echo "$caches" | wc -w)
+            echo "📋 Found $total_caches Docker cache entries"
+            
+            counter=0
+            for cache_id in $caches; do
+              counter=$((counter + 1))
+              echo "🗑️ Deleting Docker cache $counter/$total_caches (ID: $cache_id)"
+              gh api --method DELETE repos/${{ github.repository }}/actions/caches/$cache_id || true
+              
+              if [ $((counter % 20)) -eq 0 ]; then
+                echo "⏸️ Pausing briefly..."
+                sleep 2
+              fi
+            done
+            
+            echo "✅ Docker caches cleared successfully!"
+          fi
+
+      - name: Clear NPM Caches Only
+        if: ${{ github.event.inputs.cache_type == 'npm' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "📦 Clearing NPM-related caches..."
+          
+          # Get NPM-related cache entries
+          caches=$(gh api repos/${{ github.repository }}/actions/caches --jq '.actions_caches[] | select(.key | contains("npm") or contains("node")) | .id')
+          
+          if [ -z "$caches" ]; then
+            echo "ℹ️ No NPM caches found to delete"
+          else
+            echo "📋 Found $(echo "$caches" | wc -l) NPM cache entries"
+            
+            for cache_id in $caches; do
+              echo "🗑️ Deleting NPM cache ID: $cache_id"
+              gh api --method DELETE repos/${{ github.repository }}/actions/caches/$cache_id || true
+            done
+            
+            echo "✅ NPM caches cleared successfully!"
+          fi
+
+      - name: Clear Buildx Caches Only
+        if: ${{ github.event.inputs.cache_type == 'buildx' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🔨 Clearing Buildx-related caches..."
+          
+          # Get Buildx-related cache entries
+          caches=$(gh api repos/${{ github.repository }}/actions/caches --jq '.actions_caches[] | select(.key | contains("buildx")) | .id')
+          
+          if [ -z "$caches" ]; then
+            echo "ℹ️ No Buildx caches found to delete"
+          else
+            echo "📋 Found $(echo "$caches" | wc -l) Buildx cache entries"
+            
+            for cache_id in $caches; do
+              echo "🗑️ Deleting Buildx cache ID: $cache_id"
+              gh api --method DELETE repos/${{ github.repository }}/actions/caches/$cache_id || true
+            done
+            
+            echo "✅ Buildx caches cleared successfully!"
+          fi
+
+      - name: List Remaining Caches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "📋 Remaining caches after cleanup:"
+          gh api repos/${{ github.repository }}/actions/caches --jq '.actions_caches[] | "\(.key) (Size: \(.size_in_bytes | . / 1024 / 1024 | floor)MB, Created: \(.created_at))"' || echo "ℹ️ No caches remaining"
+
+      - name: Summary
+        run: |
+          echo "🎉 Cache cleanup completed!"
+          echo "💡 Next build will start fresh without any cached layers"
+          echo "⚠️ Note: This will make the next build slower as everything needs to be rebuilt"
