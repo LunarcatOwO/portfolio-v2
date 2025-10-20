@@ -29,7 +29,7 @@ jobs:
                   cache: 'npm'
 
             - name: Install dependencies
-              run: npm ci
+              run: npm install
 
             # Next.js CI build caching: re-use the incremental compiler cache to speed up builds
             # Ref: https://nextjs.org/docs/app/guides/ci-build-caching
