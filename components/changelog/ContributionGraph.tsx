@@ -85,16 +85,16 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
     1
   );
 
-  // Get color based on commit count
+  // Get color based on commit count - Blue/Purple theme matching website
   const getColor = (count: number): string => {
     if (count === 0) return 'bg-slate-800 hover:bg-slate-700';
 
     const intensity = Math.min(count / maxCommits, 1);
-    // Green color with increasing intensity: from #1f4620 to #00ff41
-    if (intensity < 0.25) return 'bg-green-900 hover:bg-green-800';
-    if (intensity < 0.5) return 'bg-green-700 hover:bg-green-600';
-    if (intensity < 0.75) return 'bg-green-600 hover:bg-green-500';
-    return 'bg-green-500 hover:bg-green-400';
+    // Blue/Purple gradient matching website theme
+    if (intensity < 0.25) return 'bg-blue-900 hover:bg-blue-800';
+    if (intensity < 0.5) return 'bg-blue-700 hover:bg-blue-600';
+    if (intensity < 0.75) return 'bg-purple-600 hover:bg-purple-500';
+    return 'bg-purple-500 hover:bg-purple-400';
   };
 
   // Get weeks for display
@@ -182,10 +182,10 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
         <span>Less</span>
         <div className="flex gap-1">
           <div className="w-3 h-3 bg-slate-800 rounded-sm" />
-          <div className="w-3 h-3 bg-green-900 rounded-sm" />
-          <div className="w-3 h-3 bg-green-700 rounded-sm" />
-          <div className="w-3 h-3 bg-green-600 rounded-sm" />
-          <div className="w-3 h-3 bg-green-500 rounded-sm" />
+          <div className="w-3 h-3 bg-blue-900 rounded-sm" />
+          <div className="w-3 h-3 bg-blue-700 rounded-sm" />
+          <div className="w-3 h-3 bg-purple-600 rounded-sm" />
+          <div className="w-3 h-3 bg-purple-500 rounded-sm" />
         </div>
         <span>More</span>
       </div>
