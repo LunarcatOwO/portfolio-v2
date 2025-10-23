@@ -67,6 +67,8 @@ jobs:
                   tag_name: release-${{ github.run_number }}
                   name: Portfolio Build ${{ github.run_number }}
                   files: portfolio-build.zip
+                  # Mark as prerelease when not building from the default branch
+                  prerelease: ${{ github.ref_name != github.event.repository.default_branch }}
                   generate_release_notes: true
 
             - name: Cache Docker layers
