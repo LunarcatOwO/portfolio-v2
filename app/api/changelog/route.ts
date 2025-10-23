@@ -1,9 +1,3 @@
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import path from 'path';
-
-const execAsync = promisify(exec);
-
 // Cache interface
 interface CacheData {
   commits: CommitData[];
@@ -27,32 +21,65 @@ function isCacheValid(): boolean {
   return now - cache.timestamp < CACHE_DURATION;
 }
 
-async function getCommitsFromGit(): Promise<CommitData[]> {
-  const repoPath = path.resolve(process.cwd());
+async function getCommitsFromGitHub(): Promise<CommitData[]> {
+  const owner = 'LunarcatOwO';
+  const repo = 'portfolio-v2';
+  
+  // GitHub API endpoint for commits
+  // Per-page max is 100, we'll paginate through all commits
+  const commits: CommitData[] = [];
+  let page = 1;
+  let hasMore = true;
+  
+  while (hasMore) {
+    const url = `https://api.github.com/repos/${owner}/${repo}/commits?per_page=100&page=${page}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'portfolio-v2',
+        // Optional: Add token if rate limiting becomes an issue
+        // 'Authorization': `token ${process.env.GITHUB_TOKEN}`,
+      },
+    });
 
-  // Get all commits with hash, date, author, and message
-  const { stdout } = await execAsync(
-    'git log --pretty=format:"%H|||%aI|||%an|||%s" --date=iso',
-    {
-      cwd: repoPath,
-      maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.statusText}`);
     }
-  );
 
-  // Parse the git log output
-  const commits = stdout
-    .split('\n')
-    .filter((line) => line.trim())
-    .map((line) => {
-      const [hash, date, author, message] = line.split('|||');
-      return {
-        hash: hash || '',
-        date: date || new Date().toISOString(),
-        author: author || 'Unknown',
-        message: message || '',
+    const data = await response.json() as Array<{
+      sha: string;
+      commit: {
+        author: {
+          name: string;
+          date: string;
+        };
+        message: string;
       };
-    })
-    .filter((commit) => commit.hash); // Remove any empty entries
+    }>;
+
+    if (data.length === 0) {
+      hasMore = false;
+      break;
+    }
+
+    // Transform GitHub API response to our format
+    data.forEach((item) => {
+      commits.push({
+        hash: item.sha,
+        date: item.commit.author.date,
+        author: item.commit.author.name,
+        message: item.commit.message.split('\n')[0], // Use first line only
+      });
+    });
+
+    // Check if there are more pages
+    if (data.length < 100) {
+      hasMore = false;
+    } else {
+      page++;
+    }
+  }
 
   return commits;
 }
@@ -70,8 +97,8 @@ export async function GET() {
       });
     }
 
-    // Fetch fresh commits
-    const commits = await getCommitsFromGit();
+    // Fetch fresh commits from GitHub API
+    const commits = await getCommitsFromGitHub();
 
     // Update cache
     cache = {
