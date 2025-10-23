@@ -1,3 +1,19 @@
+// Portfolio Of LunarcatOwO
+// Copyright (C) 2025  LunarcatOwO
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -85,16 +101,16 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
     1
   );
 
-  // Get color based on commit count - Blue/Purple theme matching website
+  // Get color based on commit count - Pink theme matching website
   const getColor = (count: number): string => {
     if (count === 0) return 'bg-slate-800 hover:bg-slate-700';
 
     const intensity = Math.min(count / maxCommits, 1);
-    // Blue/Purple gradient matching website theme
-    if (intensity < 0.25) return 'bg-blue-900 hover:bg-blue-800';
-    if (intensity < 0.5) return 'bg-blue-700 hover:bg-blue-600';
-    if (intensity < 0.75) return 'bg-purple-600 hover:bg-purple-500';
-    return 'bg-purple-500 hover:bg-purple-400';
+    // Pink gradient matching website theme (Navbar uses pink-400)
+    if (intensity < 0.25) return 'bg-pink-900 hover:bg-pink-800';
+    if (intensity < 0.5) return 'bg-pink-700 hover:bg-pink-600';
+    if (intensity < 0.75) return 'bg-pink-600 hover:bg-pink-500';
+    return 'bg-pink-500 hover:bg-pink-400';
   };
 
   // Get weeks for display
@@ -182,10 +198,10 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
         <span>Less</span>
         <div className="flex gap-1">
           <div className="w-3 h-3 bg-slate-800 rounded-sm" />
-          <div className="w-3 h-3 bg-blue-900 rounded-sm" />
-          <div className="w-3 h-3 bg-blue-700 rounded-sm" />
-          <div className="w-3 h-3 bg-purple-600 rounded-sm" />
-          <div className="w-3 h-3 bg-purple-500 rounded-sm" />
+          <div className="w-3 h-3 bg-pink-900 rounded-sm" />
+          <div className="w-3 h-3 bg-pink-700 rounded-sm" />
+          <div className="w-3 h-3 bg-pink-600 rounded-sm" />
+          <div className="w-3 h-3 bg-pink-500 rounded-sm" />
         </div>
         <span>More</span>
       </div>
