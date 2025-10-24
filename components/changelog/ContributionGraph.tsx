@@ -16,7 +16,8 @@
 
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { motion } from 'motion/react';
 
 interface CommitData {
   hash: string;
@@ -61,6 +62,8 @@ function addDays(date: Date, days: number): Date {
 
 export default function ContributionGraph({ commits }: ContributionGraphProps) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [hoveredDate, setHoveredDate] = useState<string | null>(null);
+  const [hoveredPosition, setHoveredPosition] = useState<{ x: number; y: number } | null>(null);
 
   // Group commits by date
   const commitsByDate = useMemo(() => {
@@ -122,6 +125,20 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
     return weeksArray;
   }, [allDates]);
 
+  // Auto-select the latest day with commits on initial load
+  useEffect(() => {
+    if (selectedDate === null && Object.keys(commitsByDate).length > 0) {
+      // Get all dates with commits, sorted in descending order
+      const datesWithCommits = Object.keys(commitsByDate).sort((a, b) => 
+        new Date(b).getTime() - new Date(a).getTime()
+      );
+      
+      if (datesWithCommits.length > 0) {
+        setSelectedDate(datesWithCommits[0]);
+      }
+    }
+  }, [commitsByDate, selectedDate]);
+
   const selectedDateCommits = selectedDate ? commitsByDate[selectedDate] : null;
 
   return (
@@ -136,34 +153,8 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
       {/* Contribution Graph */}
       <div className="overflow-x-auto pb-4">
         <div className="inline-block min-w-full">
-          {/* Day labels */}
-          <div className="mb-2 ml-12 flex gap-1">
-            {['Mon', 'Wed', 'Fri', 'Sun'].map((day) => (
-              <div
-                key={day}
-                className="w-8 text-center text-xs text-gray-500"
-              >
-                {day}
-              </div>
-            ))}
-          </div>
-
           {/* Graph */}
           <div className="flex gap-1">
-            {/* Day of week labels */}
-            <div className="flex flex-col gap-1 pr-2">
-              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
-                (day, index) => (
-                  <div
-                    key={day}
-                    className="h-3 text-xs text-gray-500 flex items-center"
-                  >
-                    {index % 2 === 0 ? day[0] : ''}
-                  </div>
-                )
-              )}
-            </div>
-
             {/* Week columns */}
             <div className="flex gap-1">
               {weeks.map((week, weekIndex) => (
@@ -172,17 +163,33 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
                     const dateStr = formatDate(day, 'YYYY-MM-DD');
                     const dayCommits = commitsByDate[dateStr] || [];
                     const count = dayCommits.length;
+                    const isSelected = selectedDate === dateStr;
 
                     return (
-                      <button
+                      <motion.button
                         key={dateStr}
                         onClick={() =>
                           setSelectedDate(
                             selectedDate === dateStr ? null : dateStr
                           )
                         }
-                        className={`w-3 h-3 rounded-sm transition-all cursor-pointer border border-transparent hover:border-gray-400 ${getColor(count)}`}
-                        title={`${count} commits on ${formatDate(day, 'MMM DD, YYYY')}`}
+                        onMouseEnter={(e) => {
+                          setHoveredDate(dateStr);
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setHoveredPosition({ x: rect.left + rect.width / 2, y: rect.top - 10 });
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredDate(null);
+                          setHoveredPosition(null);
+                        }}
+                        className={`w-3 h-3 rounded-sm transition-all cursor-pointer border ${
+                          isSelected 
+                            ? 'border-pink-400 ring-2 ring-pink-400/50' 
+                            : 'border-transparent hover:border-gray-400'
+                        } ${getColor(count)}`}
+                        whileHover={{ scale: 1.3 }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       />
                     );
                   })}
@@ -192,6 +199,31 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
           </div>
         </div>
       </div>
+
+      {/* Tooltip */}
+      {hoveredDate && hoveredPosition && (
+        <div
+          className="fixed z-50 pointer-events-none"
+          style={{
+            left: `${hoveredPosition.x}px`,
+            top: `${hoveredPosition.y}px`,
+            transform: 'translate(-50%, -100%)',
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 shadow-xl text-sm whitespace-nowrap"
+          >
+            <div className="text-gray-200 font-medium">
+              {commitsByDate[hoveredDate]?.length || 0} commit{commitsByDate[hoveredDate]?.length !== 1 ? 's' : ''}
+            </div>
+            <div className="text-gray-400 text-xs">
+              {formatDate(new Date(hoveredDate), 'MMM DD, YYYY')}
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* Legend */}
       <div className="flex items-center gap-4 text-sm text-gray-400">
