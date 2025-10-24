@@ -70,7 +70,7 @@ export default function ContributionGraph({ commits }: ContributionGraphProps) {
     const grouped: DayCommits = {};
 
     commits.forEach((commit) => {
-      const date = formatDate(new Date(commit.date), 'YYYY-MM-DD');
+      const date = commit.date.split('T')[0];
       if (!grouped[date]) {
         grouped[date] = [];
       }
