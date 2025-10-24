@@ -31,7 +31,6 @@ export async function GET(request: NextRequest) {
     // Check server-side cache first
     const cachedData = avatarCache.get(cacheKey);
     if (cachedData) {
-      console.log(`Cache hit for avatar: ${username}`);
       return new NextResponse(Buffer.from(cachedData.buffer), {
         headers: {
           'Content-Type': cachedData.contentType,
@@ -40,8 +39,6 @@ export async function GET(request: NextRequest) {
         },
       });
     }
-
-    console.log(`Cache miss for avatar: ${username}, fetching from GitHub...`);
 
     // Fetch user data from GitHub API
     const response = await fetch(`https://api.github.com/users/${username}`, {

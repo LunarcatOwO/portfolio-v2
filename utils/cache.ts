@@ -116,10 +116,21 @@ export const projectIconCache = new ServerCache<{
   isReal: boolean; // Whether it's a real icon or fallback
 }>(1000, 60 * 60 * 1000); // 1 hour TTL, max 1000 icons
 
+// Cache for changelog commits
+export const changelogCache = new ServerCache<{
+  commits: Array<{
+    hash: string;
+    date: string;
+    author: string;
+    message: string;
+  }>;
+}>(100, 6 * 60 * 60 * 1000); // 6 hours TTL, max 100 entries
+
 // Cleanup expired entries every 10 minutes
 if (typeof setInterval !== 'undefined') {
   setInterval(() => {
     avatarCache.cleanup();
     projectIconCache.cleanup();
+    changelogCache.cleanup();
   }, 10 * 60 * 1000);
 }

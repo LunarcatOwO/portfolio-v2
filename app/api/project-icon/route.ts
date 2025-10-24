@@ -82,7 +82,6 @@ export async function GET(request: NextRequest) {
     // Check server-side cache first
     const cachedData = projectIconCache.get(cacheKey);
     if (cachedData) {
-      console.log(`Cache hit for project icon: ${owner}/${repo}`);
       return new NextResponse(
         typeof cachedData.buffer === 'string' 
           ? Buffer.from(cachedData.buffer) 
@@ -96,8 +95,6 @@ export async function GET(request: NextRequest) {
         },
       });
     }
-
-    console.log(`Cache miss for project icon: ${owner}/${repo}, searching for icon...`);
 
     // Common icon extensions to check
     const extensions = ['png', 'jpg', 'jpeg', 'svg', 'webp', 'ico', 'avif'];
