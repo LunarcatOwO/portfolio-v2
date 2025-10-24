@@ -1,8 +1,20 @@
-// Cache interface
-interface CacheData {
-  commits: CommitData[];
-  timestamp: number;
-}
+// Portfolio Of LunarcatOwO
+// Copyright (C) 2025  LunarcatOwO
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+import { changelogCache } from '@/utils/cache';
 
 interface CommitData {
   hash: string;
@@ -11,15 +23,7 @@ interface CommitData {
   message: string;
 }
 
-// In-memory cache
-let cache: CacheData | null = null;
-const CACHE_DURATION = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
-
-function isCacheValid(): boolean {
-  if (!cache) return false;
-  const now = Date.now();
-  return now - cache.timestamp < CACHE_DURATION;
-}
+const CACHE_KEY = 'changelog:commits';
 
 async function getCommitsFromGitHub(): Promise<CommitData[]> {
   const owner = 'LunarcatOwO';
@@ -86,25 +90,24 @@ async function getCommitsFromGitHub(): Promise<CommitData[]> {
 
 export async function GET() {
   try {
-    // Return cached data if valid
-    if (isCacheValid() && cache) {
+    // Check the changelog cache first
+    const cachedData = changelogCache.get(CACHE_KEY);
+    if (cachedData) {
       return Response.json({
         success: true,
-        commits: cache.commits,
-        total: cache.commits.length,
+        commits: cachedData.commits,
+        total: cachedData.commits.length,
         cached: true,
-        cacheAge: Date.now() - cache.timestamp,
       });
     }
 
     // Fetch fresh commits from GitHub API
     const commits = await getCommitsFromGitHub();
 
-    // Update cache
-    cache = {
+    // Store in cache
+    changelogCache.set(CACHE_KEY, {
       commits,
-      timestamp: Date.now(),
-    };
+    });
 
     return Response.json({
       success: true,
@@ -115,16 +118,17 @@ export async function GET() {
   } catch (error) {
     console.error('Failed to fetch commits:', error);
 
-    // Return stale cache if available
-    if (cache) {
+    // Try to return cached data if available
+    const cachedData = changelogCache.get(CACHE_KEY);
+    if (cachedData) {
       return Response.json(
         {
           success: true,
-          commits: cache.commits,
-          total: cache.commits.length,
+          commits: cachedData.commits,
+          total: cachedData.commits.length,
           cached: true,
           stale: true,
-          error: 'Using stale cache due to error',
+          error: 'Using cached data due to error',
         },
         { status: 200 }
       );
