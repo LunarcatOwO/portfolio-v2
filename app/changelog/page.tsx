@@ -17,6 +17,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 import ContributionGraph from '@/components/changelog/ContributionGraph';
 
 interface CommitData {
@@ -63,41 +64,84 @@ export default function ChangelogPage() {
     fetchCommits();
   }, []);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 100,
+        damping: 15,
+        staggerChildren: 0.15
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring" as const,
+        stiffness: 200,
+        damping: 20
+      }
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 p-6 md:p-12">
+    <motion.main 
+      className="min-h-screen p-6 md:p-12"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
+        <motion.div className="mb-8" variants={itemVariants}>
           <h1 className="text-4xl font-bold mb-2">Changelog</h1>
           <p className="text-gray-400">
             Project contribution history and commit timeline
           </p>
-        </div>
+        </motion.div>
 
         {loading && (
-          <div className="flex items-center justify-center py-12">
+          <motion.div 
+            className="flex items-center justify-center py-12"
+            variants={itemVariants}
+          >
             <div className="text-gray-400">Loading commits...</div>
-          </div>
+          </motion.div>
         )}
 
         {error && (
-          <div className="bg-red-900/20 border border-red-700/50 rounded-lg p-4 text-red-300">
+          <motion.div 
+            className="bg-red-900/20 border border-red-700/50 rounded-lg p-4 text-red-300"
+            variants={itemVariants}
+          >
             <p className="font-semibold">Error</p>
             <p>{error}</p>
-          </div>
+          </motion.div>
         )}
 
         {!loading && !error && commits.length === 0 && (
-          <div className="text-center py-12 text-gray-400">
+          <motion.div 
+            className="text-center py-12 text-gray-400"
+            variants={itemVariants}
+          >
             No commits found
-          </div>
+          </motion.div>
         )}
 
         {!loading && !error && commits.length > 0 && (
-          <div className="bg-slate-800/50 rounded-lg border border-gray-700 p-8">
+          <motion.div 
+            className="bg-[#0a0a0a] border border-gray-800 rounded-lg p-8 shadow-xl"
+            variants={itemVariants}
+          >
             <ContributionGraph commits={commits} />
-          </div>
+          </motion.div>
         )}
       </div>
-    </main>
+    </motion.main>
   );
 }
