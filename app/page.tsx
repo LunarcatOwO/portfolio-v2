@@ -108,15 +108,6 @@ export default function Page() {
                   </p>
                   <div className="flex gap-4 mt-6">
                     <a
-                      href="https://github.com/LunarcatOwO"
-                      className="text-gray-400 hover:text-gray-300 transition-colors"
-                      aria-label="GitHub Profile"
-                    >
-                      <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
-                        <path d={siGithub.path} />
-                      </svg>
-                    </a>
-                    <a
                       href="mailto:root@lunarcatowo.space"
                       className="text-gray-400 hover:text-gray-300 transition-colors"
                       aria-label="Email"
@@ -124,12 +115,12 @@ export default function Page() {
                       <Mail className="w-6 h-6" />
                     </a>
                     <a
-                      href="https://youtube.com/@LunarcatOwO"
+                      href="https://github.com/LunarcatOwO"
                       className="text-gray-400 hover:text-gray-300 transition-colors"
-                      aria-label="YouTube Channel"
+                      aria-label="GitHub Profile"
                     >
                       <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
-                        <path d={siYoutube.path} />
+                        <path d={siGithub.path} />
                       </svg>
                     </a>
                     <a
@@ -148,6 +139,15 @@ export default function Page() {
                     >
                       <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
                         <path d={siTwitch.path} />
+                      </svg>
+                    </a>
+                    <a
+                      href="https://youtube.com/@LunarcatOwO"
+                      className="text-gray-400 hover:text-gray-300 transition-colors"
+                      aria-label="YouTube Channel"
+                    >
+                      <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
+                        <path d={siYoutube.path} />
                       </svg>
                     </a>
                   </div>
