@@ -18,8 +18,8 @@
 import TechCardSection from "../components/home/TechCard";
 import ProjectCard from "../components/home/ProjectCard";
 import ProfilePicture from "../components/ProfilePicture";
-import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript } from "simple-icons";
-import { Zap, Coffee } from "lucide-react";
+import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript, siYoutube, siX, siTwitch } from "simple-icons";
+import { Zap, Coffee, Mail } from "lucide-react";
 import { motion } from "motion/react";
 
 export default function Page() {
@@ -104,6 +104,7 @@ export default function Page() {
                   </p>
                   <p className="text-gray-300 max-w-2xl leading-relaxed mt-2">
                     Just a random student developer who also happens to be techincally a full stack developer lol.
+                    I also stream and post videos of me playing games... or smth idk.
                   </p>
                   <div className="flex gap-4 mt-6">
                     <a
@@ -113,6 +114,40 @@ export default function Page() {
                     >
                       <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
                         <path d={siGithub.path} />
+                      </svg>
+                    </a>
+                    <a
+                      href="mailto:root@lunarcatowo.space"
+                      className="text-gray-400 hover:text-gray-300 transition-colors"
+                      aria-label="Email"
+                    >
+                      <Mail className="w-6 h-6" />
+                    </a>
+                    <a
+                      href="https://youtube.com/@LunarcatOwO"
+                      className="text-gray-400 hover:text-gray-300 transition-colors"
+                      aria-label="YouTube Channel"
+                    >
+                      <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
+                        <path d={siYoutube.path} />
+                      </svg>
+                    </a>
+                    <a
+                      href="https://x.com/LunarcatOwO"
+                      className="text-gray-400 hover:text-gray-300 transition-colors"
+                      aria-label="X Profile"
+                    >
+                      <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
+                        <path d={siX.path} />
+                      </svg>
+                    </a>
+                    <a
+                      href="https://twitch.tv/LunarcatOwO"
+                      className="text-gray-400 hover:text-gray-300 transition-colors"
+                      aria-label="Twitch Channel"
+                    >
+                      <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
+                        <path d={siTwitch.path} />
                       </svg>
                     </a>
                   </div>
