@@ -91,8 +91,13 @@ export default function SocialFeed({
         throw new Error('No posts could be loaded');
       }
 
-      // Sort posts by timestamp (newest first)
-      allPosts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      // Sort posts by timestamp (newest first) and ensure timestamps are Date objects
+      allPosts.forEach(post => {
+        if (!(post.timestamp instanceof Date)) {
+          post.timestamp = new Date(post.timestamp);
+        }
+      });
+      allPosts.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
       setPosts(allPosts);
     } catch (err) {
