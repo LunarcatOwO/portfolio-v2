@@ -17,6 +17,7 @@
 "use client";
 import TechCardSection from "../components/home/TechCard";
 import ProjectCard from "../components/home/ProjectCard";
+import SocialFeed from "../components/home/SocialFeed";
 import ProfilePicture from "../components/ProfilePicture";
 import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript, siYoutube, siX, siTwitch } from "simple-icons";
 import { Zap, Coffee, Mail } from "lucide-react";
@@ -187,10 +188,11 @@ export default function Page() {
             {/* Latest Posts */}
             <motion.div className="mb-16" variants={itemVariants} layout>
               <h2 className="text-2xl font-bold mb-8">Social Posts</h2>
-              <div className="text-center py-12 text-gray-400">
-                <p>This is where social media posts should be...</p>
-                <p className="text-sm mt-2">But for now, just pretend there&apos;s some sort of content.</p>
-              </div>
+              <SocialFeed 
+                twitterUsername="LunarcatOwO" 
+                blueskyHandle="lunarcatowo.space"
+                maxPosts={5}
+              />
             </motion.div>
           </motion.section>
         </motion.div>
