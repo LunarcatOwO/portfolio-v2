@@ -63,63 +63,38 @@ export default function SocialFeed({
     setError(null);
     
     try {
-      // For now, we'll use mock data since we need API keys for real data
-      // In production, you'd call your API routes here
-      const mockPosts: SocialPost[] = [
-        {
-          id: '1',
-          platform: 'bluesky',
-          author: {
-            username: blueskyHandle,
-            displayName: 'LunarcatOwO',
-            avatar: undefined
-          },
-          content: 'Just deployed my new portfolio v2! Check out the new design and features. Built with Next.js and Tailwind CSS. 🚀',
-          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-          url: `https://bsky.app/profile/${blueskyHandle}`,
-          metrics: {
-            likes: 12,
-            reposts: 3,
-            replies: 5
-          }
-        },
-        {
-          id: '2',
-          platform: 'twitter',
-          author: {
-            username: twitterUsername,
-            displayName: 'LunarcatOwO',
-            avatar: undefined
-          },
-          content: 'Working on some cool new features for my projects. Stay tuned! 👀',
-          timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
-          url: `https://x.com/${twitterUsername}`,
-          metrics: {
-            likes: 8,
-            reposts: 2,
-            replies: 1
-          }
-        },
-        {
-          id: '3',
-          platform: 'bluesky',
-          author: {
-            username: blueskyHandle,
-            displayName: 'LunarcatOwO',
-            avatar: undefined
-          },
-          content: 'Finally got around to learning TypeScript properly. It\'s actually pretty nice once you get used to it!',
-          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
-          url: `https://bsky.app/profile/${blueskyHandle}`,
-          metrics: {
-            likes: 15,
-            reposts: 4,
-            replies: 7
-          }
-        }
-      ];
+      const allPosts: SocialPost[] = [];
 
-      setPosts(mockPosts);
+      // Fetch Bluesky posts
+      try {
+        const blueskyResponse = await fetch(`/api/social/bluesky?handle=${blueskyHandle}&limit=${maxPosts}`);
+        if (blueskyResponse.ok) {
+          const blueskyData = await blueskyResponse.json();
+          allPosts.push(...blueskyData.posts);
+        }
+      } catch (err) {
+        console.error('Failed to fetch Bluesky posts:', err);
+      }
+
+      // Fetch Twitter posts
+      try {
+        const twitterResponse = await fetch(`/api/social/twitter?username=${twitterUsername}&limit=${maxPosts}`);
+        if (twitterResponse.ok) {
+          const twitterData = await twitterResponse.json();
+          allPosts.push(...twitterData.posts);
+        }
+      } catch (err) {
+        console.error('Failed to fetch Twitter posts:', err);
+      }
+
+      if (allPosts.length === 0) {
+        throw new Error('No posts could be loaded');
+      }
+
+      // Sort posts by timestamp (newest first)
+      allPosts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+      setPosts(allPosts);
     } catch (err) {
       setError('Failed to load social posts');
       console.error(err);

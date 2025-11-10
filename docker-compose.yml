@@ -3,6 +3,7 @@ services:
     image: ghcr.io/lunarcatowo/portfolio-v2:latest
     environment:
       NODE_ENV: production
+      TWITTER_BEARER_TOKEN: ${{environment.TWITTER_BEARER_TOKEN}}
     restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
