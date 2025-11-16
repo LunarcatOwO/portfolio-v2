@@ -31,18 +31,20 @@ export const metadata: Metadata = {
   description: "Just doing things.",
   keywords: ["developer", "programming", "dev"],
   authors: [{ name: "LunarcatOwO" }],
+  metadataBase: new URL("https://lunarcatowo.space"),
   openGraph: {
     title: "LunarcatOwO.space",
     description: "Just doing things.",
     url: "https://lunarcatowo.space",
     siteName: "LunarcatOwO.space",
     type: "website",
+    locale: "en_US",
     images: [
       {
-        url: "https://lunarcatowo.space/api/github-avatar?username=LunarcatOwO",
+        url: "/api/og",
         width: 1200,
         height: 630,
-        alt: "LunarcatOwO",
+        alt: "LunarcatOwO - Student Developer",
       },
     ],
   },
@@ -50,7 +52,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "LunarcatOwO.space",
     description: "Just doing things.",
-    images: ["https://lunarcatowo.space/api/github-avatar?username=LunarcatOwO"],
+    creator: "@LunarcatOwO",
+    images: ["/api/og"],
   },
 };
 
