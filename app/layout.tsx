@@ -53,7 +53,11 @@ export const metadata: Metadata = {
     title: "LunarcatOwO.space",
     description: "Just doing things.",
     creator: "@LunarcatOwO",
-    images: ["/api/og"],
+    site: "@LunarcatOwO",
+    images: {
+      url: "https://lunarcatowo.space/api/og",
+      alt: "LunarcatOwO - Student Developer",
+    },
   },
 };
 
