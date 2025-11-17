@@ -10,14 +10,14 @@
     "update-packages": "npx npm-check-updates -u && npm install"
   },
   "dependencies": {
-    "@sentry/nextjs": "^10.23.0",
+    "@sentry/nextjs": "^10.25.0",
     "geist": "^1.5.1",
-    "lucide-react": "^0.553.0",
+    "lucide-react": "^0.554.0",
     "motion": "^12.23.24",
-    "next": "^16.0.1",
+    "next": "^16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "simple-icons": "^15.19.0"
+    "simple-icons": "^15.21.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -26,7 +26,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.0.1",
+    "eslint-config-next": "16.0.3",
     "npm-check-updates": "^19.1.2",
     "tailwindcss": "^4",
     "typescript": "^5"
