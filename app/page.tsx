@@ -16,7 +16,7 @@
 
 "use client";
 import TechCardSection from "../components/home/TechCard";
-import ProjectCard from "../components/home/ProjectCard";
+import ProjectCarousel from "../components/home/ProjectCarousel";
 import ProfilePicture from "../components/ProfilePicture";
 import { siGithub, siNodedotjs, siNextdotjs, siDocker, siGit, siTypescript, siYoutube, siX, siTwitch } from "simple-icons";
 import { Zap, Coffee, Mail } from "lucide-react";
@@ -36,8 +36,8 @@ export default function Page() {
     { name: "Next.js", description: "Frontend stuff (Don't have much experience yet)", icon: <SimpleIcon icon={siNextdotjs} className="w-8 h-8 text-blue-600" /> },
     { name: "Typescript", description: "Backend stuff (for this site only for now...)", icon: <SimpleIcon icon={siTypescript} className="w-8 h-8 text-blue-600" /> },
     { name: "Docker", description: "Container stuff ig", icon: <SimpleIcon icon={siDocker} className="w-8 h-8 text-blue-500" /> },
-    { name: "Java", description: "I don't even know.", icon: <Coffee className="w-8 h-8 text-orange-600" /> },
-    { name: "Git", description: "Mostly Github ¯\\_(ツ)_/¯", icon: <SimpleIcon icon={siGit} className="w-8 h-8 text-red-500" /> },
+    { name: "Java", description: "I... Just use it", icon: <Coffee className="w-8 h-8 text-orange-600" /> },
+    { name: "Git", description: "Just git.", icon: <SimpleIcon icon={siGit} className="w-8 h-8 text-red-500" /> },
     { name: "Random APIs", description: "Just here for stuff I guess", icon: <Zap className="w-8 h-8 text-purple-500" /> },
   ];
 
@@ -172,16 +172,26 @@ export default function Page() {
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold">Recent Things I&apos;ve Made</h2>
               </div>
-              <div className="space-y-8">
-                <ProjectCard
-                  name="Portfolio V2"
-                  description="You're looking at it right now. I mean, it's nothing special."
-                  status="Active"
-                  technologies={["Next.js", "Tailwind CSS"]}
-                  link="https://github.com/LunarcatOwO/portfolio-v2"
-                  repoUrl="https://github.com/LunarcatOwO/portfolio-v2"
-                />
-              </div>
+              <ProjectCarousel
+                projects={[
+                  {
+                    name: "Portfolio V2",
+                    description: "You're looking at it right now. I mean, it's nothing special.",
+                    status: "Active",
+                    technologies: ["Next.js", "Tailwind CSS"],
+                    link: "https://github.com/LunarcatOwO/portfolio-v2",
+                    repoUrl: "https://github.com/LunarcatOwO/portfolio-v2",
+                  },
+                  {
+                    name: "Simply Calendar Embeds",
+                    description: "A simple calendar app that creates a better looking embed for your Google Calendar.",
+                    status: "WIP",
+                    technologies: ["Next.js", "Tailwind CSS"],
+                    link: "https://github.com/LunarcatOwO/simply-calendar-embeds",
+                    repoUrl: "https://github.com/LunarcatOwO/simply-calendar-embeds",
+                  },
+                ]}
+              />
             </motion.div>
 
             {/* Latest Posts */}
