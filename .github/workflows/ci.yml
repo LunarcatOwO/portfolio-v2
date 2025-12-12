@@ -32,21 +32,6 @@ jobs:
             - name: Install dependencies
               run: npm install
 
-            # Next.js CI build caching: re-use the incremental compiler cache to speed up builds
-            # Ref: https://nextjs.org/docs/app/guides/ci-build-caching
-            - name: Restore Next.js cache
-              uses: actions/cache@v4
-              with:
-                  # See here for caching with `yarn`, `bun` or other package managers https://github.com/actions/cache/blob/main/examples.md or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
-                  path: |
-                      ~/.npm
-                      ${{ github.workspace }}/apps/web/.next/cache
-                  # Generate a new cache whenever packages or source files change.
-                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
-                  # If source files changed but packages didn't, rebuild from a prior cache.
-                  restore-keys: |
-                      ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
             - name: Build with Turborepo
               run: npm run build
               env:
