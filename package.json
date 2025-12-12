@@ -1,37 +1,25 @@
 {
   "name": "portfolio-v2",
   "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "build:webpack": "next build",
-    "start": "next start",
-    "lint": "eslint",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "start": "turbo run start",
+    "check-types": "turbo run check-types",
+    "clean": "turbo run clean && rm -rf node_modules",
     "update-packages": "npx npm-check-updates -u && npm install"
   },
-  "dependencies": {
-    "@sentry/nextjs": "^10.29.0",
-    "geist": "^1.5.1",
-    "lucide-react": "^0.556.0",
-    "motion": "^12.23.25",
-    "next": "^16.0.8",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
-    "simple-icons": "^16.1.0"
-  },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^24",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.0.8",
-    "npm-check-updates": "^19.1.2",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "turbo": "^2"
   },
-  "description": "Portfolio Of LunarcatOwO",
+  "packageManager": "npm@10.8.2",
+  "description": "Portfolio Of LunarcatOwO - Turborepo Monorepo",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LunarcatOwO/portfolio-v2.git"

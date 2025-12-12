@@ -15,7 +15,7 @@ concurrency:
 jobs:
     build:
         runs-on: ubuntu-latest
-        environment: Sentry
+        environment: Prod
         permissions:
           contents: write
           packages: write
@@ -40,25 +40,26 @@ jobs:
                   # See here for caching with `yarn`, `bun` or other package managers https://github.com/actions/cache/blob/main/examples.md or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
                   path: |
                       ~/.npm
-                      ${{ github.workspace }}/.next/cache
+                      ${{ github.workspace }}/apps/web/.next/cache
                   # Generate a new cache whenever packages or source files change.
                   key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
                   # If source files changed but packages didn't, rebuild from a prior cache.
                   restore-keys: |
                       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
-            - name: Build Next.js application
+            - name: Build with Turborepo
               run: npm run build
               env:
                   NEXT_TELEMETRY_DISABLED: 1
                   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+                  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
             - name: Create zip archive of build
               if: github.event_name != 'pull_request'
               run: |
-                  cd .next
-                  zip -r ../portfolio-build.zip .
-                  cd ..
+                  cd apps/web/.next
+                  zip -r ../../../portfolio-build.zip .
+                  cd ../../..
 
             - name: Create GitHub Release
               if: github.event_name != 'pull_request'

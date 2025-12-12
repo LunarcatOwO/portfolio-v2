@@ -1,0 +1,14 @@
+{
+  "name": "@portfolio/typescript-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "GPL-3.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./base.json": "./base.json",
+    "./nextjs.json": "./nextjs.json",
+    "./react-library.json": "./react-library.json"
+  }
+}

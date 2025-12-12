@@ -1,0 +1,16 @@
+{
+  "name": "@portfolio/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "GPL-3.0",
+  "exports": {
+    "./next.js": "./next.js",
+    "./library.js": "./library.js"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.8",
+    "typescript": "^5"
+  }
+}

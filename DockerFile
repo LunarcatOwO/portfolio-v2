@@ -7,10 +7,10 @@ ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED=1
 
-# Copy pre-built Next.js application
-COPY .next/standalone ./
-COPY .next/static ./.next/static
-COPY public ./public
+# Copy pre-built Next.js application from apps/web
+COPY apps/web/.next/standalone ./
+COPY apps/web/.next/static ./apps/web/.next/static
+COPY apps/web/public ./apps/web/public
 
 EXPOSE 3000
 
@@ -19,4 +19,4 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+CMD ["node", "apps/web/server.js"]
