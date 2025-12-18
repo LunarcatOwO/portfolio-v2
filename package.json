@@ -16,7 +16,7 @@
   "devDependencies": {
     "turbo": "^2"
   },
-  "packageManager": "npm@10.8.2",
+  "packageManager": "npm@11.7.0",
   "description": "Portfolio Of LunarcatOwO - Turborepo Monorepo",
   "repository": {
     "type": "git",

@@ -7,28 +7,29 @@
     "start": "next start",
     "lint": "eslint .",
     "check-types": "tsc --noEmit",
-    "clean": "rm -rf .next .turbo node_modules"
+    "clean": "rm -rf .next .turbo node_modules",
+    "update-packages": "npx npm-check-updates -u && npm install"
   },
   "dependencies": {
-    "@sentry/nextjs": "^10.29.0",
+    "@sentry/nextjs": "^10.32.0",
     "geist": "^1.5.1",
-    "lucide-react": "^0.556.0",
-    "motion": "^12.23.25",
-    "next": "^16.0.8",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
-    "simple-icons": "^16.1.0"
+    "lucide-react": "^0.562.0",
+    "motion": "^12.23.26",
+    "next": "^16.0.10",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "simple-icons": "^16.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@portfolio/eslint-config": "*",
     "@portfolio/typescript-config": "*",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^24",
+    "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.0.8",
+    "eslint-config-next": "16.0.10",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
