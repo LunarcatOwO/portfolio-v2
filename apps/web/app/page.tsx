@@ -132,7 +132,7 @@ export default function Page() {
                         <path d={siX.path} />
                       </svg>
                     </a>
-                    <a
+                    {/* <a
                       href="https://twitch.tv/LunarcatOwO"
                       className="text-gray-400 hover:text-gray-300 transition-colors"
                       aria-label="Twitch Channel"
@@ -140,7 +140,7 @@ export default function Page() {
                       <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" role="img">
                         <path d={siTwitch.path} />
                       </svg>
-                    </a>
+                    </a> */}
                     <a
                       href="https://youtube.com/@LunarcatOwO"
                       className="text-gray-400 hover:text-gray-300 transition-colors"
