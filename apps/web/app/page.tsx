@@ -181,15 +181,7 @@ export default function Page() {
                     technologies: ["Next.js", "Tailwind CSS"],
                     link: "https://github.com/LunarcatOwO/portfolio-v2",
                     repoUrl: "https://github.com/LunarcatOwO/portfolio-v2",
-                  },
-                  {
-                    name: "Simply Calendar Embeds",
-                    description: "A simple calendar app that creates a better looking embed for your Google Calendar.",
-                    status: "WIP",
-                    technologies: ["Next.js", "Tailwind CSS"],
-                    link: "https://github.com/LunarcatOwO/simply-calendar-embeds",
-                    repoUrl: "https://github.com/LunarcatOwO/simply-calendar-embeds",
-                  },
+                  }
                 ]}
               />
             </motion.div>
