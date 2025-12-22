@@ -14,7 +14,7 @@
     "update-packages": "npx npm-check-updates -u && npm install"
   },
   "devDependencies": {
-    "turbo": "^2"
+    "turbo": "^2.7.1"
   },
   "packageManager": "npm@11.7.0",
   "description": "Portfolio Of LunarcatOwO - Turborepo Monorepo",
