@@ -110,20 +110,6 @@ export async function GET(request: NextRequest) {
               </p>
             </div>
           </div>
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '40px',
-              right: '80px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              fontSize: '24px',
-              color: '#6b7280',
-            }}
-          >
-            <span>Student Developer</span>
-          </div>
         </div>
       ),
       {
