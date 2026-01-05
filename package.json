@@ -11,7 +11,7 @@
     "start": "turbo run start",
     "check-types": "turbo run check-types",
     "clean": "turbo run clean && rm -rf node_modules",
-    "update-packages": "npx npm-check-updates -u && npm install"
+    "update-packages": "npx npm-check-updates -u && npm --prefix apps/web run update-packages && npm install"
   },
   "devDependencies": {
     "turbo": "^2.7.1"
