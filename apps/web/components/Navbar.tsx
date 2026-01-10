@@ -16,7 +16,7 @@
 
 "use client";
 import Link from "next/link";
-import { Terminal, Home } from "lucide-react";
+import { Terminal, Home, ScrollText } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { LucideIcon } from "lucide-react";
 
@@ -34,6 +34,11 @@ const navigationItems: NavItem[] = [
     label: "home",
     icon: Home,
     exact: true, // Only highlight on exact "/" match
+  },
+  {
+    href: "/changelog",
+    label: "changelog",
+    icon: ScrollText,
   },
 ];
 
