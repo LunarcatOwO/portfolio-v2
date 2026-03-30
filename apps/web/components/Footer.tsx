@@ -75,7 +75,7 @@ export default function Footer() {
                     >
                         open source
                     </a>
-                    {" "}©2025 LunarcatOwO. Licensed Under GPL-3.0.
+                    {" "}©2026 LunarcatOwO. Licensed Under GPL-3.0.
                 </motion.p>
             </div>
         </motion.div>
