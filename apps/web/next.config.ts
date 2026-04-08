@@ -1,6 +1,6 @@
 import {withSentryConfig} from "@sentry/nextjs";
 // Portfolio Of LunarcatOwO
-// Copyright (C) 2025  LunarcatOwO
+// Copyright (C) 2026  LunarcatOwO
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
